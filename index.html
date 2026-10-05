@@ -29,7 +29,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;color:var(--navy);background:var(--white);line-height:1.6;font-size:16px}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--navy);background:var(--white);line-height:1.6;font-size:16px;overflow-x:hidden}
 h1,h2,h3,h4{font-family:'Poppins',sans-serif;line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 h1{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:800}
 h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700}
@@ -49,17 +49,42 @@ img{max-width:100%;display:block}
 .btn--ghost:hover{background:var(--navy);color:var(--white)}
 .btn--full{width:100%}
 .btn--sm{padding:11px 20px;font-size:.85rem}
-.link-arrow{display:inline-block;color:var(--orange);font-weight:600;font-size:.9rem;margin-top:16px}
-.link-arrow:hover{transform:translateX(4px)}
+.link-arrow{display:inline-block;color:var(--orange);font-weight:600;font-size:.9rem;margin-top:16px;transition:transform .25s ease}
+.link-arrow:hover{transform:translateX(6px)}
+
+/* ---------- Animations ---------- */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(37,211,102,.4)}50%{box-shadow:0 8px 34px rgba(37,211,102,.7)}}
+
+.hero__content > *{animation:fadeInUp .8s cubic-bezier(.2,.7,.3,1) backwards}
+.hero__content > *:nth-child(1){animation-delay:.05s}
+.hero__content > *:nth-child(2){animation-delay:.15s}
+.hero__content > *:nth-child(3){animation-delay:.25s}
+.hero__content > *:nth-child(4){animation-delay:.35s}
+.hero__content > *:nth-child(5){animation-delay:.45s}
+.hero__visual{animation:fadeInRight 1s cubic-bezier(.2,.7,.3,1) .3s backwards}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:none}
+
+.whatsapp-float{animation:pulse 2.5s infinite}
+
+/* ---------- Logo ---------- */
+.logo{display:inline-flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em}
+.logo__img{height:48px;width:auto;object-fit:contain;transition:transform .3s ease}
+.logo:hover .logo__img{transform:scale(1.05)}
+.logo--light .logo__img{background:#fff;padding:6px 10px;border-radius:10px;height:46px}
+.logo__mahmar{color:var(--orange)}
+.logo__group{color:var(--navy)}
+.logo--light .logo__group{color:var(--white)}
 
 /* ---------- Header ---------- */
 .header{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid transparent;transition:var(--transition)}
 .header.scrolled{border-bottom-color:var(--line);box-shadow:0 4px 20px rgba(44,34,80,.06)}
 .header__inner{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
-.logo{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em;display:inline-flex;gap:4px}
-.logo__mahmar{color:var(--orange)}
-.logo__group{color:var(--navy)}
-.logo--light .logo__group{color:var(--white)}
 .nav ul{display:flex;gap:32px;list-style:none}
 .nav a{font-size:.92rem;font-weight:500;color:var(--navy);position:relative;cursor:pointer}
 .nav a:hover,.nav a.active{color:var(--orange)}
@@ -79,12 +104,81 @@ img{max-width:100%;display:block}
 .hero__stats li{display:flex;flex-direction:column}
 .hero__stats strong{font-family:'Poppins',sans-serif;font-size:1.8rem;color:var(--navy);font-weight:700}
 .hero__stats span{font-size:.85rem;color:var(--gray)}
+
+/* ---------- Slider (diaporama) ---------- */
 .hero__visual{position:relative}
-.hero__card{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);border-radius:var(--radius-lg);padding:40px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.hero__card::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:var(--orange);border-radius:50%;opacity:.15}
-.hero__card-badge{display:inline-block;padding:5px 12px;background:var(--orange);color:var(--white);font-size:.75rem;font-weight:600;border-radius:999px;margin-bottom:20px}
-.hero__card h3{color:var(--white);font-size:1.6rem;margin-bottom:14px}
-.hero__card p{color:rgba(255,255,255,.75)}
+.hero__slider{
+  position:relative;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-lg);
+  aspect-ratio:4/5;
+  background:var(--navy);
+}
+.hero__slides{position:absolute;inset:0}
+.hero__slides .slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transform:scale(1.08);
+  transition:opacity 1.2s ease,transform 1.4s ease;
+}
+.hero__slides .slide.active{opacity:1;transform:scale(1)}
+.hero__slider::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(44,34,80,.15) 0%,transparent 30%,transparent 60%,rgba(44,34,80,.55) 100%);
+  pointer-events:none;
+}
+.hero__slider-badge{
+  position:absolute;
+  top:22px;
+  left:22px;
+  z-index:2;
+  background:var(--orange);
+  color:#fff;
+  padding:7px 16px;
+  border-radius:999px;
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.02em;
+  box-shadow:0 6px 18px rgba(234,107,49,.4);
+}
+.hero__slider-caption{
+  position:absolute;
+  bottom:70px;
+  left:24px;
+  right:24px;
+  z-index:2;
+  color:#fff;
+}
+.hero__slider-caption h3{color:#fff;font-size:1.35rem;margin-bottom:6px;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.hero__slider-caption p{color:rgba(255,255,255,.88);font-size:.9rem;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.hero__dots{
+  position:absolute;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:2;
+}
+.hero__dots .dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:rgba(255,255,255,.55);
+  cursor:pointer;
+  transition:all .35s ease;
+  border:none;
+  padding:0;
+}
+.hero__dots .dot:hover{background:rgba(255,255,255,.85)}
+.hero__dots .dot.active{background:var(--orange);width:26px;border-radius:5px}
 
 /* ---------- Sections ---------- */
 .section{padding:100px 0}
@@ -95,33 +189,37 @@ img{max-width:100%;display:block}
 
 /* ---------- Page banner ---------- */
 .page-hero{padding:150px 0 60px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);text-align:center;position:relative;overflow:hidden}
-.page-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:var(--orange);border-radius:50%;opacity:.12}
-.page-hero::after{content:'';position:absolute;bottom:-120px;left:-60px;width:280px;height:280px;background:var(--orange);border-radius:50%;opacity:.08}
-.page-hero h1{color:var(--white);margin-bottom:14px;position:relative;z-index:1}
-.page-hero p{color:rgba(255,255,255,.75);max-width:640px;margin:0 auto;position:relative;z-index:1}
-.breadcrumb{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px;position:relative;z-index:1}
+.page-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:var(--orange);border-radius:50%;opacity:.12;animation:floatY 6s ease-in-out infinite}
+.page-hero::after{content:'';position:absolute;bottom:-120px;left:-60px;width:280px;height:280px;background:var(--orange);border-radius:50%;opacity:.08;animation:floatY 8s ease-in-out infinite reverse}
+.page-hero h1{color:var(--white);margin-bottom:14px;position:relative;z-index:1;animation:fadeInUp .7s ease backwards}
+.page-hero p{color:rgba(255,255,255,.75);max-width:640px;margin:0 auto;position:relative;z-index:1;animation:fadeInUp .7s ease .15s backwards}
+.breadcrumb{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:14px;position:relative;z-index:1;animation:fadeInUp .6s ease backwards}
 .breadcrumb a{color:var(--orange)}
 .breadcrumb a:hover{text-decoration:underline}
 
 /* ---------- About ---------- */
 .about__inner{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
 .about__visual{position:relative}
-.about__visual img{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);aspect-ratio:4/5;object-fit:cover;width:100%}
-.about__floating{position:absolute;bottom:-20px;right:-20px;background:var(--white);padding:20px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);border-left:4px solid var(--orange)}
+.about__visual img{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);aspect-ratio:4/5;object-fit:cover;width:100%;transition:transform .6s ease}
+.about__visual:hover img{transform:scale(1.02)}
+.about__floating{position:absolute;bottom:-20px;right:-20px;background:var(--white);padding:20px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);border-left:4px solid var(--orange);animation:floatY 4s ease-in-out infinite}
 .about__floating strong{display:block;font-family:'Poppins',sans-serif;color:var(--navy);font-size:1.1rem}
 .about__floating span{font-size:.82rem;color:var(--gray)}
 .about__content h2{margin:12px 0 20px}
 .about__content p{margin-bottom:16px}
 .about__values{list-style:none;margin-top:32px;display:grid;gap:14px}
-.about__values li{display:flex;align-items:center;gap:14px;font-weight:500;color:var(--navy)}
+.about__values li{display:flex;align-items:center;gap:14px;font-weight:500;color:var(--navy);transition:transform .3s ease}
+.about__values li:hover{transform:translateX(6px)}
 .about__values span{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(234,107,49,.1);color:var(--orange);border-radius:50%;font-size:.8rem;font-weight:700}
 
 /* ---------- Services ---------- */
 .services__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.service-card{background:var(--white);border-radius:var(--radius-lg);padding:32px;position:relative;box-shadow:var(--shadow);transition:var(--transition);display:flex;flex-direction:column;border:1px solid transparent}
-.service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(234,107,49,.25)}
-.service-card__num{position:absolute;top:24px;right:28px;font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:700;color:var(--line)}
-.service-card__icon{font-size:2rem;margin-bottom:18px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:rgba(234,107,49,.1);border-radius:14px}
+.service-card{background:var(--white);border-radius:var(--radius-lg);padding:32px;position:relative;box-shadow:var(--shadow);transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;display:flex;flex-direction:column;border:1px solid transparent}
+.service-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:rgba(234,107,49,.25)}
+.service-card__num{position:absolute;top:24px;right:28px;font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:700;color:var(--line);transition:color .35s ease}
+.service-card:hover .service-card__num{color:var(--orange)}
+.service-card__icon{font-size:2rem;margin-bottom:18px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:rgba(234,107,49,.1);border-radius:14px;transition:transform .35s ease}
+.service-card:hover .service-card__icon{transform:scale(1.1) rotate(-6deg)}
 .service-card h3{margin-bottom:12px}
 .service-card > p{font-size:.92rem;margin-bottom:16px}
 .service-card ul{list-style:none;margin-bottom:20px;margin-top:auto}
@@ -137,8 +235,8 @@ img{max-width:100%;display:block}
 .filter:hover{border-color:var(--orange);color:var(--orange)}
 .filter.active{background:var(--navy);color:var(--white);border-color:var(--navy)}
 .formations__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.formation-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:var(--transition);display:flex;flex-direction:column}
-.formation-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.formation-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .35s ease,box-shadow .35s ease;display:flex;flex-direction:column}
+.formation-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
 .formation-card__head{padding:24px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .status{font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
 .status--ouverte{background:rgba(34,197,94,.12);color:#16a34a}
@@ -172,10 +270,10 @@ img{max-width:100%;display:block}
 /* ---------- Réalisations ---------- */
 .realisations__filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px}
 .realisations__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.realisation-card{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/3;cursor:pointer;transition:var(--transition)}
-.realisation-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.realisation-card img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
-.realisation-card:hover img{transform:scale(1.08)}
+.realisation-card{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/3;cursor:pointer;transition:transform .35s ease,box-shadow .35s ease}
+.realisation-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.realisation-card img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+.realisation-card:hover img{transform:scale(1.1)}
 .realisation-card__overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,34,80,.9),transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:var(--white)}
 .realisation-card__cat{font-size:.72rem;font-weight:600;color:var(--orange);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
 .realisation-card__overlay h3{color:var(--white);font-size:1.05rem}
@@ -185,8 +283,10 @@ img{max-width:100%;display:block}
 .contact__info h2{margin:12px 0 16px}
 .contact__info > p{margin-bottom:36px}
 .contact__list{list-style:none;display:grid;gap:22px}
-.contact__list li{display:flex;gap:16px;align-items:flex-start}
-.contact__list .ico{flex-shrink:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--white);border-radius:12px;box-shadow:var(--shadow);font-size:1.1rem}
+.contact__list li{display:flex;gap:16px;align-items:flex-start;transition:transform .3s ease}
+.contact__list li:hover{transform:translateX(6px)}
+.contact__list .ico{flex-shrink:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--white);border-radius:12px;box-shadow:var(--shadow);font-size:1.1rem;transition:transform .3s ease}
+.contact__list li:hover .ico{transform:scale(1.1)}
 .contact__list strong{display:block;font-size:.85rem;color:var(--navy);margin-bottom:2px}
 .contact__list a{font-size:.92rem;color:var(--gray)}
 .contact__list a:hover{color:var(--orange)}
@@ -205,13 +305,13 @@ img{max-width:100%;display:block}
 .footer h4{color:var(--white);font-size:.95rem;margin-bottom:18px}
 .footer p{color:rgba(255,255,255,.6);font-size:.9rem;margin-top:16px}
 .footer ul{list-style:none;display:grid;gap:10px}
-.footer a,.footer li{font-size:.88rem;color:rgba(255,255,255,.65);cursor:pointer}
-.footer a:hover{color:var(--orange)}
+.footer a,.footer li{font-size:.88rem;color:rgba(255,255,255,.65);cursor:pointer;transition:var(--transition)}
+.footer a:hover{color:var(--orange);transform:translateX(4px);display:inline-block}
 .footer__bottom{border-top:1px solid rgba(255,255,255,.08);padding:22px 0;text-align:center;font-size:.82rem}
 
 /* ---------- WhatsApp float ---------- */
-.whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 8px 24px rgba(37,211,102,.4);z-index:999;transition:var(--transition)}
-.whatsapp-float:hover{transform:scale(1.08)}
+.whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 8px 24px rgba(37,211,102,.4);z-index:999;transition:transform .3s ease}
+.whatsapp-float:hover{transform:scale(1.12)}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1024px){
@@ -250,9 +350,11 @@ img{max-width:100%;display:block}
   .section{padding:70px 0}
   .hero{padding:130px 0 70px}
   .hero__stats{gap:24px;flex-wrap:wrap}
+  .hero__slider{aspect-ratio:1/1}
   .contact__form{padding:28px}
   .about__floating{right:12px;bottom:-16px}
   .page-hero{padding:120px 0 50px}
+  .logo__img{height:42px}
 }
 </style>
 </head>
@@ -262,7 +364,7 @@ img{max-width:100%;display:block}
 <header class="header" id="header">
   <div class="container header__inner">
     <a class="logo" data-nav="accueil" href="#/">
-      <span class="logo__mahmar">MAHMAR</span><span class="logo__group">Group</span>
+      <img src="Mahamar/logo.jpg" alt="Mahmar Group" class="logo__img">
     </a>
     <nav class="nav" id="nav">
       <ul>
@@ -286,7 +388,9 @@ img{max-width:100%;display:block}
 <footer class="footer">
   <div class="container footer__inner">
     <div>
-      <div class="logo logo--light"><span class="logo__mahmar">MAHMAR</span><span class="logo__group">Group</span></div>
+      <div class="logo logo--light">
+        <img src="Mahamar/logo.jpg" alt="Mahmar Group" class="logo__img">
+      </div>
       <p>Accompagner les institutions vers l'excellence communicationnelle.</p>
     </div>
     <div>
@@ -329,7 +433,6 @@ img{max-width:100%;display:block}
 <script>
 /* =========================================
    MAHMAR GROUP — Application JS
-   Router + rendu + interactions
    ========================================= */
 
 // ---------- DATA ----------
@@ -502,6 +605,12 @@ const REALISATIONS = [
   { id:6, cat:"evenement",  catLabel:"Événement",   title:"Séminaire de formation",           img:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80" }
 ];
 
+const SLIDES = [
+  { src:"Mahamar/Acceuil.jpg",  title:"Une équipe à votre écoute",     caption:"Nous donnons vie à vos projets communicationnels." },
+  { src:"Mahamar/Acceuil2.jpg", title:"Des projets d'excellence",      caption:"Qualité, innovation et satisfaction client." },
+  { src:"Mahamar/A_propos.jpg", title:"Un accompagnement complet",     caption:"De la conception à la livraison." }
+];
+
 // ---------- HELPERS ----------
 const $ = (s, ctx=document) => ctx.querySelector(s);
 const $$ = (s, ctx=document) => [...ctx.querySelectorAll(s)];
@@ -547,6 +656,21 @@ const FORMATION_CARD = (f) => `
       <a href="#/formation/${f.id}" class="btn btn--primary btn--sm">Voir la formation</a>
     </div>
   </article>`;
+
+const SLIDER_HTML = `
+  <div class="hero__slider" id="heroSlider">
+    <div class="hero__slides">
+      ${SLIDES.map((s,i) => `<img src="${s.src}" alt="${escapeHTML(s.title)}" class="slide${i===0?' active':''}" loading="${i===0?'eager':'lazy'}">`).join('')}
+    </div>
+    <div class="hero__slider-badge">Mahmar Group</div>
+    <div class="hero__slider-caption" id="sliderCaption">
+      <h3>${escapeHTML(SLIDES[0].title)}</h3>
+      <p>${escapeHTML(SLIDES[0].caption)}</p>
+    </div>
+    <div class="hero__dots" id="sliderDots">
+      ${SLIDES.map((_,i) => `<button class="dot${i===0?' active':''}" data-slide="${i}" aria-label="Slide ${i+1}"></button>`).join('')}
+    </div>
+  </div>`;
 
 const CONTACT_FORM = `
   <form class="contact__form" id="contactForm">
@@ -639,11 +763,7 @@ function pageAccueil(){
         </ul>
       </div>
       <div class="hero__visual">
-        <div class="hero__card">
-          <div class="hero__card-badge">Mahmar Group</div>
-          <h3>Une prise en charge complète</h3>
-          <p>De la conception à la livraison, une équipe passionnée au service de votre image.</p>
-        </div>
+        ${SLIDER_HTML}
       </div>
     </div>
   </section>
@@ -651,7 +771,7 @@ function pageAccueil(){
   <section class="section">
     <div class="container about__inner">
       <div class="about__visual">
-        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80" alt="Équipe Mahmar Group">
+        <img src="Mahamar/A_propos.jpg" alt="À propos de Mahmar Group">
         <div class="about__floating">
           <strong>Qualité</strong>
           <span>Innovation · Satisfaction</span>
@@ -720,7 +840,7 @@ function pageApropos(){
   <section class="section">
     <div class="container about__inner">
       <div class="about__visual">
-        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="Équipe Mahmar Group">
+        <img src="Mahamar/A_propos.jpg" alt="Équipe Mahmar Group">
         <div class="about__floating">
           <strong>Notre mission</strong>
           <span>Accompagner vers l'excellence</span>
@@ -916,6 +1036,7 @@ function renderFormationsGrid(filter='all'){
   const list = filter === 'all' ? FORMATIONS : FORMATIONS.filter(f => f.status === filter);
   if(!list.length){ grid.innerHTML = `<p class="empty-msg">Aucune formation pour ce filtre.</p>`; return; }
   grid.innerHTML = list.map(FORMATION_CARD).join('');
+  setupReveals();
 }
 
 // ---------- RENDER REALISATIONS ----------
@@ -932,11 +1053,87 @@ function renderRealisationsGrid(filter='all'){
         <h3>${escapeHTML(r.title)}</h3>
       </div>
     </article>`).join('');
+  setupReveals();
+}
+
+// ---------- SLIDER (diaporama) ----------
+let sliderInterval = null;
+let currentSlide = 0;
+
+function initSlider(){
+  const slider = $('#heroSlider');
+  if(!slider) return;
+  const slides = $$('.slide', slider);
+  const dots = $$('.dot', slider);
+  const caption = $('#sliderCaption', slider);
+  if(!slides.length) return;
+
+  function goTo(index){
+    currentSlide = index;
+    slides.forEach((s,i) => s.classList.toggle('active', i === index));
+    dots.forEach((d,i) => d.classList.toggle('active', i === index));
+    if(caption && SLIDES[index]){
+      caption.innerHTML = `<h3>${escapeHTML(SLIDES[index].title)}</h3><p>${escapeHTML(SLIDES[index].caption)}</p>`;
+      caption.style.animation = 'none';
+      void caption.offsetWidth;
+      caption.style.animation = 'fadeInUp .6s ease';
+    }
+  }
+
+  function next(){
+    goTo((currentSlide + 1) % slides.length);
+  }
+
+  // Auto-play toutes les 3 secondes
+  if(sliderInterval) clearInterval(sliderInterval);
+  sliderInterval = setInterval(next, 3000);
+
+  // Clics sur les dots
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goTo(i);
+      clearInterval(sliderInterval);
+      sliderInterval = setInterval(next, 3000);
+    });
+  });
+}
+
+// ---------- ANIMATIONS AU SCROLL ----------
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+function setupReveals(){
+  const groups = [
+    { sel: '.section__head' },
+    { sel: '.about__visual' },
+    { sel: '.about__content' },
+    { sel: '.service-card', stagger: true },
+    { sel: '.formation-card', stagger: true },
+    { sel: '.realisation-card', stagger: true },
+    { sel: '.contact__info' },
+    { sel: '.contact__form' },
+    { sel: '.detail__content' },
+    { sel: '.detail__side' }
+  ];
+  groups.forEach(g => {
+    $$(g.sel).forEach((el, i) => {
+      if(el.classList.contains('reveal')) return;
+      el.classList.add('reveal');
+      if(g.stagger) el.style.transitionDelay = Math.min(i * 0.08, 0.5) + 's';
+      revealObserver.observe(el);
+    });
+  });
 }
 
 // ---------- ROUTER ----------
 const ROUTES = {
-  'accueil':      { title:"Mahmar Group — Accueil",         render: pageAccueil,          nav:'accueil',     after: bindContactForm },
+  'accueil':      { title:"Mahmar Group — Accueil",         render: pageAccueil,          nav:'accueil',     after: ()=>{ initSlider(); bindContactForm(); } },
   'a-propos':     { title:"Mahmar Group — À propos",        render: pageApropos,          nav:'apropos',     after: null },
   'services':     { title:"Mahmar Group — Services",        render: pageServices,         nav:'services',    after: null },
   'formations':   { title:"Mahmar Group — Formations",      render: pageFormations,       nav:'formations',  after: ()=>renderFormationsGrid('all') },
@@ -955,9 +1152,12 @@ function router(){
   let html = '';
   let meta;
 
+  // Nettoyer le slider précédent
+  if(sliderInterval) clearInterval(sliderInterval);
+
   if(route === 'formation' && param){
     html = pageFormationDetail(param);
-    meta = { title:"Mahmar Group — Formation", nav:'formations' };
+    meta = { title:"Mahmar Group — Formation", nav:'formations', after: null };
   } else if(ROUTES[route]){
     html = ROUTES[route].render();
     meta = ROUTES[route];
@@ -973,8 +1173,11 @@ function router(){
   $$('.nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === meta.nav));
   $('#nav').classList.remove('open');
 
-  if(route === 'formation' && param) return;
+  // after-render
   if(meta.after) meta.after();
+
+  // animations d'apparition
+  setTimeout(setupReveals, 50);
 }
 
 // ---------- CONTACT FORM ----------
