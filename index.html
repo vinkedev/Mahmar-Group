@@ -56,34 +56,47 @@ img{max-width:100%;display:block}
 
 /* ---------- Animations ---------- */
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
-@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(37,211,102,.4)}50%{box-shadow:0 8px 34px rgba(37,211,102,.7)}}
 @keyframes slideTextIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08)}}
-
-.hero__content > *{animation:fadeInUp .8s cubic-bezier(.2,.7,.3,1) backwards}
-.hero__content > *:nth-child(1){animation-delay:.05s}
-.hero__content > *:nth-child(2){animation-delay:.15s}
-.hero__content > *:nth-child(3){animation-delay:.25s}
-.hero__content > *:nth-child(4){animation-delay:.35s}
-.hero__content > *:nth-child(5){animation-delay:.45s}
 
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
 .reveal.visible{opacity:1;transform:none}
 
 .whatsapp-float{animation:pulse 2.5s infinite}
 
-/* ---------- Logo ---------- */
-.logo{display:inline-flex;align-items:center;gap:8px;font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em}
-.logo__img{height:48px;width:auto;object-fit:contain;transition:transform .3s ease}
-.logo:hover .logo__img{transform:scale(1.05)}
-.logo--light .logo__img{background:#fff;padding:6px 10px;border-radius:10px;height:46px}
+/* ---------- Logo (mis en valeur) ---------- */
+.logo{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  font-size:1.3rem;
+  letter-spacing:-.02em;
+}
+.logo__img{
+  height:64px;
+  width:auto;
+  max-width:220px;
+  object-fit:contain;
+  transition:transform .3s ease,filter .3s ease;
+  filter:drop-shadow(0 4px 10px rgba(44,34,80,.15));
+}
+.logo:hover .logo__img{transform:scale(1.04);filter:drop-shadow(0 6px 14px rgba(234,107,49,.35))}
+.logo--light .logo__img{
+  background:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  height:60px;
+  box-shadow:0 8px 22px rgba(0,0,0,.25);
+}
 
 /* ---------- Header ---------- */
-.header{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid transparent;transition:var(--transition)}
+.header{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid transparent;transition:var(--transition)}
 .header.scrolled{border-bottom-color:var(--line);box-shadow:0 4px 20px rgba(44,34,80,.06)}
-.header__inner{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+.header__inner{display:flex;align-items:center;justify-content:space-between;height:92px;gap:24px}
 .nav ul{display:flex;gap:32px;list-style:none}
 .nav a{font-size:.92rem;font-weight:500;color:var(--navy);position:relative;cursor:pointer}
 .nav a:hover,.nav a.active{color:var(--orange)}
@@ -98,10 +111,10 @@ img{max-width:100%;display:block}
 .hero-slider{
   position:relative;
   width:100%;
-  height:88vh;
-  min-height:560px;
-  max-height:820px;
-  margin-top:78px;
+  height:82vh;
+  min-height:520px;
+  max-height:780px;
+  margin-top:92px;
   overflow:hidden;
   background:var(--navy);
   box-shadow:0 20px 60px rgba(44,34,80,.35);
@@ -134,8 +147,8 @@ img{max-width:100%;display:block}
   position:absolute;
   inset:0;
   background:
-    linear-gradient(to right,rgba(30,23,64,.85) 0%,rgba(30,23,64,.65) 45%,rgba(30,23,64,.25) 75%,rgba(30,23,64,.55) 100%),
-    linear-gradient(to top,rgba(30,23,64,.85) 0%,transparent 45%);
+    linear-gradient(to right,rgba(30,23,64,.82) 0%,rgba(30,23,64,.6) 50%,rgba(30,23,64,.3) 100%),
+    linear-gradient(to top,rgba(30,23,64,.75) 0%,transparent 45%);
   z-index:1;
 }
 
@@ -152,15 +165,11 @@ img{max-width:100%;display:block}
   max-width:1200px;
   margin:0 auto;
   padding:0 24px;
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:50px;
-  align-items:center;
 }
 
 .hero-slider__text{
   color:#fff;
-  max-width:640px;
+  max-width:680px;
 }
 .hero-slider__badge{
   display:inline-block;
@@ -183,16 +192,16 @@ img{max-width:100%;display:block}
   line-height:1.1;
   letter-spacing:-.02em;
   margin-bottom:20px;
-  text-shadow:0 4px 24px rgba(0,0,0,.3);
+  text-shadow:0 4px 24px rgba(0,0,0,.35);
 }
 .hero-slider__title .text-orange{color:var(--orange)}
 .hero-slider__desc{
   font-size:1.08rem;
-  color:rgba(255,255,255,.9);
+  color:rgba(255,255,255,.92);
   max-width:560px;
   margin-bottom:34px;
   line-height:1.65;
-  text-shadow:0 2px 12px rgba(0,0,0,.3);
+  text-shadow:0 2px 12px rgba(0,0,0,.35);
 }
 .hero-slider__actions{
   display:flex;
@@ -201,7 +210,6 @@ img{max-width:100%;display:block}
 }
 
 /* Animation du texte à chaque slide */
-.hero-slider__slide.active ~ .hero-slider__content .hero-slider__text > *,
 .hero-slider__text.animating > *{
   animation:slideTextIn .8s cubic-bezier(.2,.7,.3,1) backwards;
 }
@@ -209,39 +217,6 @@ img{max-width:100%;display:block}
 .hero-slider__text.animating > *:nth-child(2){animation-delay:.2s}
 .hero-slider__text.animating > *:nth-child(3){animation-delay:.3s}
 .hero-slider__text.animating > *:nth-child(4){animation-delay:.4s}
-
-/* Stats à droite */
-.hero-slider__stats{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  align-self:end;
-  margin-bottom:40px;
-}
-.hero-slider__stat{
-  background:rgba(255,255,255,.1);
-  backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:16px;
-  padding:18px 22px;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  gap:16px;
-  transition:transform .3s ease,background .3s ease;
-}
-.hero-slider__stat:hover{transform:translateX(-6px);background:rgba(255,255,255,.16)}
-.hero-slider__stat strong{
-  font-family:'Poppins',sans-serif;
-  font-size:1.7rem;
-  font-weight:800;
-  color:var(--orange);
-  min-width:70px;
-}
-.hero-slider__stat span{
-  font-size:.88rem;
-  color:rgba(255,255,255,.85);
-}
 
 /* Flèches */
 .hero-slider__nav{
@@ -310,7 +285,7 @@ img{max-width:100%;display:block}
 .section__head h2{margin-bottom:16px}
 
 /* ---------- Page banner ---------- */
-.page-hero{padding:150px 0 60px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);text-align:center;position:relative;overflow:hidden}
+.page-hero{padding:160px 0 60px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);text-align:center;position:relative;overflow:hidden}
 .page-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:var(--orange);border-radius:50%;opacity:.12;animation:floatY 6s ease-in-out infinite}
 .page-hero::after{content:'';position:absolute;bottom:-120px;left:-60px;width:280px;height:280px;background:var(--orange);border-radius:50%;opacity:.08;animation:floatY 8s ease-in-out infinite reverse}
 .page-hero h1{color:var(--white);margin-bottom:14px;position:relative;z-index:1;animation:fadeInUp .7s ease backwards}
@@ -449,15 +424,11 @@ img{max-width:100%;display:block}
   .services__grid,.formations__grid,.realisations__grid{grid-template-columns:repeat(2,1fr)}
   .footer__inner{grid-template-columns:1fr 1fr}
   .detail__side{position:static}
-  .hero-slider__inner{grid-template-columns:1fr;gap:30px}
-  .hero-slider__stats{flex-direction:row;flex-wrap:wrap;align-self:auto;margin-bottom:0}
-  .hero-slider__stat{flex:1 1 160px;padding:14px 16px}
-  .hero-slider__stat strong{font-size:1.3rem;min-width:auto}
 }
 @media (max-width:768px){
   .nav{
     position:fixed;
-    top:78px; left:0; right:0;
+    top:92px; left:0; right:0;
     background:var(--white);
     padding:24px;
     border-bottom:1px solid var(--line);
@@ -467,7 +438,7 @@ img{max-width:100%;display:block}
     pointer-events:none;
     transition:transform .3s ease, opacity .3s ease, visibility .3s;
     box-shadow:var(--shadow);
-    max-height:calc(100vh - 78px);
+    max-height:calc(100vh - 92px);
     overflow-y:auto;
   }
   .nav.open{
@@ -484,15 +455,18 @@ img{max-width:100%;display:block}
   .section{padding:70px 0}
   .contact__form{padding:28px}
   .about__floating{right:12px;bottom:-16px}
-  .page-hero{padding:120px 0 50px}
-  .logo__img{height:42px}
+  .page-hero{padding:130px 0 50px}
 
-  .hero-slider{height:auto;min-height:640px;max-height:none;padding:60px 0}
+  .header__inner{height:76px}
+  .logo__img{height:52px}
+  .logo--light .logo__img{height:48px}
+
+  .hero-slider{height:auto;min-height:520px;max-height:none;padding:80px 0 60px;margin-top:76px}
   .hero-slider__nav{display:none}
   .hero-slider__title{font-size:1.9rem}
   .hero-slider__desc{font-size:.98rem}
-  .hero-slider__stats{display:none}
   .hero-slider__inner{padding:0 20px}
+  .hero-slider__content{align-items:center}
 }
 </style>
 </head>
@@ -743,23 +717,24 @@ const REALISATIONS = [
   { id:6, cat:"evenement",  catLabel:"Événement",   title:"Séminaire de formation",           img:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80" }
 ];
 
-// === SLIDES DU DIAPORAMA (image + texte qui change) ===
+// === SLIDES DU DIAPORAMA ===
+// Slide 1 (Bienvenue) = A_propos.jpg · Slide 2 = Acceuil.jpg · Slide 3 = Acceuil2.jpg
 const SLIDES = [
   {
-    src: "Mahamar/Acceuil.jpg",
+    src: "Mahamar/A_propos.jpg",
     badge: "Bienvenue chez Mahmar Group",
     title: "Accompagner vos projets vers <span class='text-orange'>l'excellence</span>.",
     desc: "Une entreprise multidisciplinaire dédiée à la réalisation de vos projets professionnels et communicationnels."
   },
   {
-    src: "Mahamar/Acceuil2.jpg",
+    src: "Mahamar/Acceuil.jpg",
     badge: "Nos services",
     title: "Des solutions <span class='text-orange'>complètes</span> pour votre image.",
     desc: "Formations, impression, production vidéo, photographie et événementiel — une prise en charge totale de A à Z."
   },
   {
-    src: "Mahamar/A_propos.jpg",
-    badge: "À propos",
+    src: "Mahamar/Acceuil2.jpg",
+    badge: "Notre engagement",
     title: "Une équipe <span class='text-orange'>passionnée</span> à votre service.",
     desc: "Qualité, innovation et satisfaction client : notre engagement au quotidien pour la réussite de vos projets."
   }
@@ -811,7 +786,7 @@ const FORMATION_CARD = (f) => `
     </div>
   </article>`;
 
-// ===== DIAPORAMA HTML (pleine largeur) =====
+// ===== DIAPORAMA HTML (pleine largeur, sans stats) =====
 const HERO_SLIDER = `
   <section class="hero-slider" id="heroSlider">
     ${SLIDES.map((s,i) => `
@@ -830,11 +805,6 @@ const HERO_SLIDER = `
             <a href="#/services" class="btn btn--primary">Découvrir nos services</a>
             <a href="#/formations" class="btn btn--ghost-light">Voir les formations</a>
           </div>
-        </div>
-        <div class="hero-slider__stats">
-          <div class="hero-slider__stat"><strong>05</strong><span>Pôles d'expertise</span></div>
-          <div class="hero-slider__stat"><strong>100%</strong><span>Satisfaction client</span></div>
-          <div class="hero-slider__stat"><strong>24/7</strong><span>Accompagnement</span></div>
         </div>
       </div>
     </div>
@@ -930,7 +900,7 @@ function pageAccueil(){
   <section class="section">
     <div class="container about__inner">
       <div class="about__visual">
-        <img src="Mahamar/A_propos.jpg" alt="À propos de Mahmar Group">
+        <img src="Mahamar/Acceuil.jpg" alt="À propos de Mahmar Group">
         <div class="about__floating">
           <strong>Qualité</strong>
           <span>Innovation · Satisfaction</span>
@@ -1216,10 +1186,9 @@ function renderRealisationsGrid(filter='all'){
 }
 
 // =========================================
-// DIAPORAMA — Logique
+// DIAPORAMA — Logique (sans pause au survol)
 // =========================================
 let sliderTimer = null;
-let progressTimer = null;
 let currentSlide = 0;
 const SLIDE_DURATION = 3000; // 3 secondes
 
@@ -1239,11 +1208,9 @@ function initSlider(){
 
   if(!slides.length) return;
 
-  function stopAll(){
+  function stopTimer(){
     if(sliderTimer) clearInterval(sliderTimer);
-    if(progressTimer) clearInterval(progressTimer);
     sliderTimer = null;
-    progressTimer = null;
   }
 
   function updateText(index){
@@ -1252,7 +1219,6 @@ function initSlider(){
     badgeEl.textContent = s.badge;
     titleEl.innerHTML = s.title;
     descEl.textContent = s.desc;
-    // Relance l'animation du texte
     textEl.classList.remove('animating');
     void textEl.offsetWidth;
     textEl.classList.add('animating');
@@ -1277,44 +1243,25 @@ function initSlider(){
     startProgress();
 
     if(resetTimer){
-      stopAll();
-      sliderTimer = setInterval(next, SLIDE_DURATION);
+      stopTimer();
+      sliderTimer = setInterval(() => goTo(currentSlide + 1, false), SLIDE_DURATION);
     }
   }
 
-  function next(){ goTo(currentSlide + 1, false); }
-  function prev(){ goTo(currentSlide - 1, true); }
-
-  // Init
   goTo(0, true);
 
-  // Boutons précédent / suivant
-  if(prevBtn) prevBtn.addEventListener('click', () => { prev(); });
-  if(nextBtn) nextBtn.addEventListener('click', () => { goTo(currentSlide + 1, true); });
+  if(prevBtn) prevBtn.addEventListener('click', () => goTo(currentSlide - 1, true));
+  if(nextBtn) nextBtn.addEventListener('click', () => goTo(currentSlide + 1, true));
 
-  // Dots
   dots.forEach((dot,i) => {
     dot.addEventListener('click', () => goTo(i, true));
   });
 
-  // Pause au survol (confort visuel)
-  slider.addEventListener('mouseenter', () => {
-    if(sliderTimer) clearInterval(sliderTimer);
-    if(progressTimer) clearInterval(progressTimer);
-    if(progressEl){
-      const computed = getComputedStyle(progressEl).width;
-      progressEl.style.transition = 'none';
-      progressEl.style.width = computed;
-    }
-  });
-  slider.addEventListener('mouseleave', () => {
-    goTo(currentSlide, true);
-  });
-
-  // Pause quand l'onglet n'est plus actif
+  // ✅ Pas de pause au survol — le diaporama continue
+  // ✅ Pause uniquement quand l'onglet n'est plus actif (performance)
   document.addEventListener('visibilitychange', () => {
     if(document.hidden){
-      stopAll();
+      stopTimer();
     } else {
       goTo(currentSlide, true);
     }
@@ -1375,9 +1322,7 @@ function router(){
   let html = '';
   let meta;
 
-  // Nettoyer l'ancien timer du slider
   if(sliderTimer) clearInterval(sliderTimer);
-  if(progressTimer) clearInterval(progressTimer);
 
   if(route === 'formation' && param){
     html = pageFormationDetail(param);
