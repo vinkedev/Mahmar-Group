@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mahmar Group — Communication, Formation & Événementiel</title>
 <meta name="description" content="Mahmar Group accompagne les institutions, organisations et particuliers dans la réalisation de leurs projets professionnels et communicationnels." />
 <meta property="og:title" content="Mahmar Group" />
@@ -93,7 +93,7 @@ img{max-width:100%;display:block}
 .eyebrow{display:inline-block;color:var(--orange);font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
 .section__head h2{margin-bottom:16px}
 
-/* ---------- Page banner (pour les pages internes) ---------- */
+/* ---------- Page banner ---------- */
 .page-hero{padding:150px 0 60px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);text-align:center;position:relative;overflow:hidden}
 .page-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:var(--orange);border-radius:50%;opacity:.12}
 .page-hero::after{content:'';position:absolute;bottom:-120px;left:-60px;width:280px;height:280px;background:var(--orange);border-radius:50%;opacity:.08}
@@ -548,6 +548,77 @@ const FORMATION_CARD = (f) => `
     </div>
   </article>`;
 
+const CONTACT_FORM = `
+  <form class="contact__form" id="contactForm">
+    <div class="field">
+      <label for="name">Nom complet *</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="field">
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="field">
+      <label for="phone">Téléphone / WhatsApp</label>
+      <input type="tel" id="phone" name="phone">
+    </div>
+    <div class="field">
+      <label for="subject">Service concerné</label>
+      <select id="subject" name="subject">
+        <option>Formations professionnelles</option>
+        <option>Impression tout support</option>
+        <option>Production vidéo</option>
+        <option>Photographie institutionnelle</option>
+        <option>Planification d'événements</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn--primary btn--full">Envoyer la demande</button>
+    <p class="form-status" id="formStatus"></p>
+  </form>`;
+
+const CONTACT_INFO = `
+  <div class="contact__info">
+    <span class="eyebrow">Contact</span>
+    <h2>Parlons de votre <span class="text-orange">projet</span>.</h2>
+    <p>Un devis, une question, une demande de formation ? Écrivez-nous, nous vous répondons dans les plus brefs délais.</p>
+    <ul class="contact__list">
+      <li>
+        <span class="ico">📞</span>
+        <div>
+          <strong>Téléphone</strong>
+          <a href="tel:+22661040464">+226 61 04 04 64</a><br>
+          <a href="tel:54851931">54 85 19 31</a>
+        </div>
+      </li>
+      <li>
+        <span class="ico">✉️</span>
+        <div>
+          <strong>Email</strong>
+          <a href="mailto:mahmargroup@gmail.com">mahmargroup@gmail.com</a>
+        </div>
+      </li>
+      <li>
+        <span class="ico">💬</span>
+        <div>
+          <strong>WhatsApp</strong>
+          <a href="https://wa.me/22661040464" target="_blank" rel="noopener">Discuter maintenant</a>
+        </div>
+      </li>
+      <li>
+        <span class="ico">📍</span>
+        <div>
+          <strong>Localisation</strong>
+          <span style="font-size:.92rem;color:var(--gray)">Burkina Faso</span>
+        </div>
+      </li>
+    </ul>
+  </div>`;
+
 // ---------- PAGES ----------
 function pageAccueil(){
   return `
@@ -624,6 +695,13 @@ function pageAccueil(){
       <div style="text-align:center;margin-top:40px">
         <a href="#/formations" class="btn btn--ghost">Voir toutes les formations</a>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container contact__inner">
+      ${CONTACT_INFO}
+      ${CONTACT_FORM}
     </div>
   </section>
   `;
@@ -824,74 +902,8 @@ function pageContact(){
 
   <section class="section">
     <div class="container contact__inner">
-      <div class="contact__info">
-        <span class="eyebrow">Contact</span>
-        <h2>Parlons de votre projet.</h2>
-        <p>Un devis, une question, une demande de formation ? Écrivez-nous.</p>
-        <ul class="contact__list">
-          <li>
-            <span class="ico">📞</span>
-            <div>
-              <strong>Téléphone</strong>
-              <a href="tel:+22661040464">+226 61 04 04 64</a><br>
-              <a href="tel:54851931">54 85 19 31</a>
-            </div>
-          </li>
-          <li>
-            <span class="ico">✉️</span>
-            <div>
-              <strong>Email</strong>
-              <a href="mailto:mahmargroup@gmail.com">mahmargroup@gmail.com</a>
-            </div>
-          </li>
-          <li>
-            <span class="ico">💬</span>
-            <div>
-              <strong>WhatsApp</strong>
-              <a href="https://wa.me/22661040464" target="_blank" rel="noopener">Discuter maintenant</a>
-            </div>
-          </li>
-          <li>
-            <span class="ico">📍</span>
-            <div>
-              <strong>Localisation</strong>
-              <span style="font-size:.92rem;color:var(--gray)">Burkina Faso</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <form class="contact__form" id="contactForm">
-        <div class="field">
-          <label for="name">Nom complet *</label>
-          <input type="text" id="name" name="name" required>
-        </div>
-        <div class="field">
-          <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="field">
-          <label for="phone">Téléphone / WhatsApp</label>
-          <input type="tel" id="phone" name="phone">
-        </div>
-        <div class="field">
-          <label for="subject">Service concerné</label>
-          <select id="subject" name="subject">
-            <option>Formations professionnelles</option>
-            <option>Impression tout support</option>
-            <option>Production vidéo</option>
-            <option>Photographie institutionnelle</option>
-            <option>Planification d'événements</option>
-            <option>Autre</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="message">Message *</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary btn--full">Envoyer la demande</button>
-        <p class="form-status" id="formStatus"></p>
-      </form>
+      ${CONTACT_INFO}
+      ${CONTACT_FORM}
     </div>
   </section>
   `;
@@ -924,7 +936,7 @@ function renderRealisationsGrid(filter='all'){
 
 // ---------- ROUTER ----------
 const ROUTES = {
-  'accueil':      { title:"Mahmar Group — Accueil",         render: pageAccueil,          nav:'accueil',     after: null },
+  'accueil':      { title:"Mahmar Group — Accueil",         render: pageAccueil,          nav:'accueil',     after: bindContactForm },
   'a-propos':     { title:"Mahmar Group — À propos",        render: pageApropos,          nav:'apropos',     after: null },
   'services':     { title:"Mahmar Group — Services",        render: pageServices,         nav:'services',    after: null },
   'formations':   { title:"Mahmar Group — Formations",      render: pageFormations,       nav:'formations',  after: ()=>renderFormationsGrid('all') },
@@ -958,11 +970,9 @@ function router(){
   app.innerHTML = html;
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // navigation active
   $$('.nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === meta.nav));
   $('#nav').classList.remove('open');
 
-  // after-render hooks
   if(route === 'formation' && param) return;
   if(meta.after) meta.after();
 }
@@ -980,9 +990,7 @@ function bindContactForm(){
       status.className = "form-status error";
       return;
     }
-    // TODO: brancher Formspree / Web3Forms / Firebase ici
     console.log('Nouvelle demande :', data);
-
     status.textContent = "Merci ! Votre demande a bien été envoyée. Nous vous répondrons rapidement.";
     status.className = "form-status success";
     form.reset();
