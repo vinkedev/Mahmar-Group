@@ -62,28 +62,29 @@ img{max-width:100%;display:block}
 @keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(37,211,102,.4)}50%{box-shadow:0 8px 34px rgba(37,211,102,.7)}}
 @keyframes slideTextIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.08)}}
-@keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes modalIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
 
-/* ---------- REVEAL AU SCROLL (variantes) ---------- */
-.reveal,
-.reveal-left,
-.reveal-right,
-.reveal-zoom,
-.reveal-rotate{
+/* ---------- REVEAL AU SCROLL (spécificité renforcée avec main) ---------- */
+main .reveal,
+main .reveal-left,
+main .reveal-right,
+main .reveal-zoom,
+main .reveal-rotate{
   opacity:0;
   transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1);
   will-change:opacity,transform;
 }
-.reveal{transform:translateY(40px)}
-.reveal-left{transform:translateX(-60px)}
-.reveal-right{transform:translateX(60px)}
-.reveal-zoom{transform:scale(.9)}
-.reveal-rotate{transform:translateY(40px) rotate(-2deg)}
-.reveal.visible,
-.reveal-left.visible,
-.reveal-right.visible,
-.reveal-zoom.visible,
-.reveal-rotate.visible{opacity:1;transform:none}
+main .reveal{transform:translateY(40px)}
+main .reveal-left{transform:translateX(-60px)}
+main .reveal-right{transform:translateX(60px)}
+main .reveal-zoom{transform:scale(.9)}
+main .reveal-rotate{transform:translateY(40px) rotate(-2deg)}
+main .reveal.visible,
+main .reveal-left.visible,
+main .reveal-right.visible,
+main .reveal-zoom.visible,
+main .reveal-rotate.visible{opacity:1;transform:none}
 
 /* ---------- PRELOADER ---------- */
 .preloader{
@@ -98,92 +99,42 @@ img{max-width:100%;display:block}
   gap:28px;
   transition:opacity .6s ease,visibility .6s ease;
 }
-.preloader.hidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
+.preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .preloader::before{
-  content:'';
-  position:absolute;
-  top:-100px;right:-100px;
-  width:400px;height:400px;
-  background:var(--orange);
-  border-radius:50%;
-  opacity:.08;
-  filter:blur(60px);
+  content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;
+  background:var(--orange);border-radius:50%;opacity:.08;filter:blur(60px);
 }
 .preloader::after{
-  content:'';
-  position:absolute;
-  bottom:-100px;left:-100px;
-  width:400px;height:400px;
-  background:var(--orange);
-  border-radius:50%;
-  opacity:.06;
-  filter:blur(60px);
+  content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;
+  background:var(--orange);border-radius:50%;opacity:.06;filter:blur(60px);
 }
-.preloader__circle{
-  position:relative;
-  width:140px;
-  height:140px;
-  z-index:1;
-}
+.preloader__circle{position:relative;width:140px;height:140px;z-index:1}
 .preloader__ring{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  border:3px solid transparent;
-  border-top-color:var(--orange);
-  border-right-color:var(--orange);
+  position:absolute;inset:0;border-radius:50%;border:3px solid transparent;
+  border-top-color:var(--orange);border-right-color:var(--orange);
   animation:preloaderSpin 1s linear infinite;
 }
 .preloader__ring--2{
   inset:14px;
   border-top-color:rgba(255,255,255,.35);
-  border-right-color:transparent;
-  border-bottom-color:transparent;
-  border-left-color:rgba(255,255,255,.25);
+  border-right-color:transparent;border-bottom-color:transparent;border-left-color:rgba(255,255,255,.25);
   animation:preloaderSpin 1.6s linear infinite reverse;
 }
 .preloader__logo{
-  position:absolute;
-  inset:26px;
-  border-radius:50%;
-  overflow:hidden;
-  background:#fff;
+  position:absolute;inset:26px;border-radius:50%;overflow:hidden;background:#fff;
   box-shadow:0 0 0 6px rgba(234,107,49,.15),0 12px 32px rgba(234,107,49,.4);
   animation:preloaderPulse 2s ease-in-out infinite;
 }
-.preloader__logo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
+.preloader__logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .preloader__name{
-  font-family:'Poppins',sans-serif;
-  font-weight:900;
-  font-size:1.7rem;
-  letter-spacing:-.02em;
-  display:flex;
-  gap:9px;
-  z-index:1;
-  animation:preloaderFadeUp .6s ease .2s backwards;
+  font-family:'Poppins',sans-serif;font-weight:900;font-size:1.7rem;letter-spacing:-.02em;
+  display:flex;gap:9px;z-index:1;animation:preloaderFadeUp .6s ease .2s backwards;
 }
 .preloader__name-top{color:var(--orange)}
 .preloader__name-bottom{color:#fff}
-.preloader__bar{
-  width:220px;
-  height:3px;
-  background:rgba(255,255,255,.1);
-  border-radius:3px;
-  overflow:hidden;
-  z-index:1;
-}
+.preloader__bar{width:220px;height:3px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;z-index:1}
 .preloader__bar-fill{
-  height:100%;
-  width:0;
+  height:100%;width:0;
   background:linear-gradient(90deg,var(--orange),var(--orange-dark));
   border-radius:3px;
   animation:preloaderBar 1.6s ease-out forwards;
@@ -199,104 +150,63 @@ img{max-width:100%;display:block}
 
 /* ---------- Scroll progress bar ---------- */
 .scroll-progress{
-  position:fixed;
-  top:0;left:0;
-  height:3px;
-  width:0;
+  position:fixed;top:0;left:0;height:3px;width:0;
   background:linear-gradient(90deg,var(--orange),var(--orange-dark));
-  z-index:9998;
-  box-shadow:0 0 12px rgba(234,107,49,.7);
+  z-index:9998;box-shadow:0 0 12px rgba(234,107,49,.7);
   transition:width .1s linear;
 }
 
 /* ---------- WhatsApp float ---------- */
-.whatsapp-float{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 8px 24px rgba(37,211,102,.4);z-index:999;transition:transform .3s ease;animation:pulse 2.5s infinite}
+.whatsapp-float{
+  position:fixed;bottom:24px;right:24px;width:56px;height:56px;
+  background:#25D366;color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:0 8px 24px rgba(37,211,102,.4);z-index:999;
+  transition:transform .3s ease;animation:pulse 2.5s infinite;
+}
 .whatsapp-float:hover{transform:scale(1.12)}
 
-/* ---------- Retour en haut ---------- */
-.back-to-top{
-  position:fixed;
-  bottom:24px;
-  left:24px;
-  width:48px;
-  height:48px;
-  background:var(--navy);
-  color:#fff;
-  border:none;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.3rem;
-  cursor:pointer;
-  box-shadow:0 8px 24px rgba(44,34,80,.35);
-  z-index:999;
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(20px);
-  transition:all .35s ease;
-}
-.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
-.back-to-top:hover{background:var(--orange);transform:translateY(-4px)}
-
-/* ---------- Logo (sans bordure orange en haut) ---------- */
+/* ---------- Logo (nom sur UNE LIGNE) ---------- */
 .logo{
-  display:inline-flex;
-  align-items:center;
-  gap:14px;
-  font-family:'Poppins',sans-serif;
-  font-weight:900;
-  letter-spacing:-.02em;
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:'Poppins',sans-serif;font-weight:900;letter-spacing:-.02em;
   transition:transform .3s ease;
 }
 .logo:hover{transform:scale(1.02)}
 .logo__circle{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  overflow:hidden;
-  flex-shrink:0;
-  background:#fff;
+  width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#fff;
   box-shadow:0 8px 22px rgba(44,34,80,.15);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:box-shadow .3s ease,transform .3s ease;
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .3s ease,transform .3s ease,width .35s ease,height .35s ease;
 }
-.logo:hover .logo__circle{
-  box-shadow:0 12px 30px rgba(234,107,49,.4);
-  transform:scale(1.04);
-}
-.logo__circle img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:50%;
-}
+.logo:hover .logo__circle{box-shadow:0 12px 30px rgba(234,107,49,.4);transform:scale(1.04)}
+.logo__circle img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .logo__name{
   display:flex;
-  flex-direction:column;
+  flex-direction:row;
+  align-items:baseline;
+  gap:.3em;
+  white-space:nowrap;
   line-height:1;
   font-family:'Poppins',sans-serif;
   font-weight:900;
   letter-spacing:-.03em;
 }
 .logo__name-top{
-  font-size:1.5rem;
+  font-size:1.35rem;
   font-weight:900;
   color:var(--orange);
   letter-spacing:-.02em;
+  transition:font-size .35s ease;
 }
 .logo__name-bottom{
-  font-size:1.5rem;
+  font-size:1.35rem;
   font-weight:900;
   color:var(--navy);
   letter-spacing:-.02em;
+  transition:font-size .35s ease;
 }
-/* Variante footer */
-.logo--light .logo__circle{
-  box-shadow:0 8px 22px rgba(0,0,0,.4);
-}
+.logo--light .logo__circle{box-shadow:0 8px 22px rgba(0,0,0,.4)}
 .logo--light .logo__name-bottom{color:#fff}
 
 /* ---------- Header ---------- */
@@ -306,8 +216,8 @@ img{max-width:100%;display:block}
 .header.scrolled .header__inner{height:88px}
 .header.scrolled .logo__circle{width:64px;height:64px}
 .header.scrolled .logo__name-top,
-.header.scrolled .logo__name-bottom{font-size:1.25rem}
-.nav ul{display:flex;gap:32px;list-style:none}
+.header.scrolled .logo__name-bottom{font-size:1.2rem}
+.nav ul{display:flex;gap:32px;list-style:none;align-items:center}
 .nav a{font-size:.92rem;font-weight:500;color:var(--navy);position:relative;cursor:pointer}
 .nav a::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;background:var(--orange);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
 .nav a:hover::after{transform:scaleX(1)}
@@ -317,132 +227,46 @@ img{max-width:100%;display:block}
 .burger{display:none;background:none;border:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
 .burger span{width:24px;height:2px;background:var(--navy);border-radius:2px;transition:var(--transition)}
 
+/* CTA dans le menu mobile */
+.nav__cta{display:none}
+.nav .btn{color:#fff}
+.nav .btn::after{display:none}
+
 /* ---------- HERO DIAPORAMA ---------- */
-.hero-slider{
-  position:relative;
-  width:100%;
-  height:82vh;
-  min-height:520px;
-  max-height:780px;
-  margin-top:104px;
-  overflow:hidden;
-  background:var(--navy);
-  box-shadow:0 20px 60px rgba(44,34,80,.35);
-}
-.hero-slider__slide{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  opacity:0;
-  transition:opacity 1.2s ease;
-  z-index:0;
-}
+.hero-slider{position:relative;width:100%;height:82vh;min-height:520px;max-height:780px;margin-top:104px;overflow:hidden;background:var(--navy);box-shadow:0 20px 60px rgba(44,34,80,.35)}
+.hero-slider__slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease;z-index:0}
 .hero-slider__slide.active{opacity:1;z-index:1}
-.hero-slider__slide img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-}
+.hero-slider__slide img{width:100%;height:100%;object-fit:cover;object-position:center}
 .hero-slider__slide.active img{animation:kenburns 7s ease-out forwards}
 .hero-slider__slide::after{
-  content:'';
-  position:absolute;
-  inset:0;
+  content:'';position:absolute;inset:0;
   background:
     linear-gradient(to right,rgba(30,23,64,.82) 0%,rgba(30,23,64,.6) 50%,rgba(30,23,64,.3) 100%),
     linear-gradient(to top,rgba(30,23,64,.75) 0%,transparent 45%);
   z-index:1;
 }
-.hero-slider__content{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  display:flex;
-  align-items:center;
-}
-.hero-slider__inner{
-  width:100%;
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 24px;
-}
+.hero-slider__content{position:absolute;inset:0;z-index:2;display:flex;align-items:center}
+.hero-slider__inner{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
 .hero-slider__text{color:#fff;max-width:680px}
-.hero-slider__badge{
-  display:inline-block;
-  padding:7px 16px;
-  background:var(--orange);
-  color:#fff;
-  font-size:.78rem;
-  font-weight:600;
-  border-radius:999px;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  margin-bottom:22px;
-  box-shadow:0 8px 22px rgba(234,107,49,.45);
-}
-.hero-slider__title{
-  font-family:'Poppins',sans-serif;
-  font-size:clamp(2rem,4.5vw,3.6rem);
-  font-weight:800;
-  color:#fff;
-  line-height:1.1;
-  letter-spacing:-.02em;
-  margin-bottom:20px;
-  text-shadow:0 4px 24px rgba(0,0,0,.35);
-}
+.hero-slider__badge{display:inline-block;padding:7px 16px;background:var(--orange);color:#fff;font-size:.78rem;font-weight:600;border-radius:999px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:22px;box-shadow:0 8px 22px rgba(234,107,49,.45)}
+.hero-slider__title{font-family:'Poppins',sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:20px;text-shadow:0 4px 24px rgba(0,0,0,.35)}
 .hero-slider__title .text-orange{color:var(--orange)}
-.hero-slider__desc{
-  font-size:1.08rem;
-  color:rgba(255,255,255,.92);
-  max-width:560px;
-  margin-bottom:34px;
-  line-height:1.65;
-  text-shadow:0 2px 12px rgba(0,0,0,.35);
-}
+.hero-slider__desc{font-size:1.08rem;color:rgba(255,255,255,.92);max-width:560px;margin-bottom:34px;line-height:1.65;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .hero-slider__actions{display:flex;gap:14px;flex-wrap:wrap}
 .hero-slider__text.animating > *{animation:slideTextIn .8s cubic-bezier(.2,.7,.3,1) backwards}
 .hero-slider__text.animating > *:nth-child(1){animation-delay:.1s}
 .hero-slider__text.animating > *:nth-child(2){animation-delay:.2s}
 .hero-slider__text.animating > *:nth-child(3){animation-delay:.3s}
 .hero-slider__text.animating > *:nth-child(4){animation-delay:.4s}
-.hero-slider__dots{
-  position:absolute;
-  bottom:32px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:10px;
-  z-index:3;
-}
-.hero-slider__dots .dot{
-  width:10px;height:10px;
-  border-radius:50%;
-  background:rgba(255,255,255,.5);
-  cursor:pointer;
-  transition:all .35s ease;
-  border:none;padding:0;
-}
+.hero-slider__dots{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:3}
+.hero-slider__dots .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .35s ease;border:none;padding:0}
 .hero-slider__dots .dot:hover{background:rgba(255,255,255,.85)}
 .hero-slider__dots .dot.active{background:var(--orange);width:32px;border-radius:6px}
-.hero-slider__progress{
-  position:absolute;
-  bottom:0;left:0;
-  height:3px;
-  width:100%;
-  background:rgba(255,255,255,.1);
-  z-index:3;
-}
-.hero-slider__progress-bar{
-  height:100%;
-  background:var(--orange);
-  width:0;
-  transition:width .1s linear;
-}
+.hero-slider__progress{position:absolute;bottom:0;left:0;height:3px;width:100%;background:rgba(255,255,255,.1);z-index:3}
+.hero-slider__progress-bar{height:100%;background:var(--orange);width:0;transition:width .1s linear}
 
-/* ---------- Sections ---------- */
-.section{padding:100px 0;position:relative;overflow:hidden}
+/* ---------- Sections (overflow:clip au lieu de hidden pour préserver sticky) ---------- */
+.section{padding:100px 0;position:relative;overflow:clip}
 .section--alt{background:var(--off-white)}
 .section__head{text-align:center;max-width:720px;margin:0 auto 60px}
 .eyebrow{display:inline-block;color:var(--orange);font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;position:relative;padding-bottom:6px}
@@ -464,15 +288,7 @@ img{max-width:100%;display:block}
 /* ---------- About ---------- */
 .about__inner{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
 .about__visual{position:relative;display:flex;align-items:center;justify-content:center}
-.about__visual img{
-  border-radius:var(--radius-lg);
-  box-shadow:var(--shadow-lg);
-  width:100%;
-  height:auto;
-  object-fit:contain;
-  background:var(--off-white);
-  transition:transform .6s ease,box-shadow .6s ease;
-}
+.about__visual img{border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;height:auto;object-fit:contain;background:var(--off-white);transition:transform .6s ease,box-shadow .6s ease}
 .about__visual:hover img{transform:scale(1.02);box-shadow:0 30px 80px rgba(44,34,80,.2)}
 .about__floating{position:absolute;bottom:-20px;right:-20px;background:var(--white);padding:20px 24px;border-radius:var(--radius);box-shadow:var(--shadow-lg);border-left:4px solid var(--orange);animation:floatY 4s ease-in-out infinite}
 .about__floating strong{display:block;font-family:'Poppins',sans-serif;color:var(--navy);font-size:1.1rem}
@@ -513,82 +329,19 @@ img{max-width:100%;display:block}
 .filter{padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--white);color:var(--navy);font-size:.85rem;font-weight:500;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif}
 .filter:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
 .filter.active{background:var(--navy);color:var(--white);border-color:var(--navy);transform:translateY(-2px);box-shadow:0 8px 20px rgba(44,34,80,.25)}
-
-.formations__grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:28px;
-}
-.formation-card{
-  background:var(--white);
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  border:1px solid var(--line);
-  transition:transform .4s cubic-bezier(.2,.7,.3,1),box-shadow .4s ease,border-color .4s ease;
-  display:flex;
-  flex-direction:column;
-}
-.formation-card:hover{
-  transform:translateY(-10px);
-  box-shadow:0 25px 60px rgba(44,34,80,.18);
-  border-color:rgba(234,107,49,.35);
-}
-.formation-card__image{
-  position:relative;
-  width:100%;
-  aspect-ratio:4/3;
-  overflow:hidden;
-  background:linear-gradient(135deg,var(--navy),var(--navy-light));
-}
-.formation-card__image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:transform .8s cubic-bezier(.2,.7,.3,1);
-}
+.formations__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.formation-card{background:var(--white);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .4s cubic-bezier(.2,.7,.3,1),box-shadow .4s ease,border-color .4s ease;display:flex;flex-direction:column}
+.formation-card:hover{transform:translateY(-10px);box-shadow:0 25px 60px rgba(44,34,80,.18);border-color:rgba(234,107,49,.35)}
+.formation-card__image{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--navy-light))}
+.formation-card__image img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.3,1)}
 .formation-card:hover .formation-card__image img{transform:scale(1.1)}
-.formation-card__status{
-  position:absolute;
-  top:16px;
-  right:16px;
-  font-size:.7rem;
-  font-weight:700;
-  padding:6px 12px;
-  border-radius:999px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-  backdrop-filter:blur(10px);
-  box-shadow:0 6px 16px rgba(0,0,0,.15);
-  z-index:2;
-}
+.formation-card__status{position:absolute;top:16px;right:16px;font-size:.7rem;font-weight:700;padding:6px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em;backdrop-filter:blur(10px);box-shadow:0 6px 16px rgba(0,0,0,.15);z-index:2}
 .formation-card__status.status--ouverte{background:rgba(34,197,94,.95);color:#fff}
 .formation-card__status.status--avenir{background:rgba(234,107,49,.95);color:#fff}
 .formation-card__status.status--encours{background:rgba(44,34,80,.95);color:#fff}
 .formation-card__status.status--terminee{background:rgba(107,104,128,.95);color:#fff}
-.formation-card__trainer{
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:50px 20px 16px;
-  background:linear-gradient(to top,rgba(30,23,64,.95),transparent);
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#fff;
-  z-index:2;
-}
-.formation-card__trainer-avatar{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  overflow:hidden;
-  border:2px solid var(--orange);
-  flex-shrink:0;
-  background:#fff;
-  transition:transform .4s ease;
-}
+.formation-card__trainer{position:absolute;bottom:0;left:0;right:0;padding:50px 20px 16px;background:linear-gradient(to top,rgba(30,23,64,.95),transparent);display:flex;align-items:center;gap:12px;color:#fff;z-index:2}
+.formation-card__trainer-avatar{width:46px;height:46px;border-radius:50%;overflow:hidden;border:2px solid var(--orange);flex-shrink:0;background:#fff;transition:transform .4s ease}
 .formation-card:hover .formation-card__trainer-avatar{transform:scale(1.1) rotate(-6deg)}
 .formation-card__trainer-avatar img{width:100%;height:100%;object-fit:cover}
 .formation-card__trainer-info{display:flex;flex-direction:column;line-height:1.15;min-width:0}
@@ -667,65 +420,128 @@ img{max-width:100%;display:block}
 .footer a:hover{color:var(--orange);transform:translateX(6px);display:inline-block}
 .footer__bottom{border-top:1px solid rgba(255,255,255,.08);padding:22px 0;text-align:center;font-size:.82rem}
 
-/* ---------- Responsive ---------- */
+/* =========================================
+   MODAL INSCRIPTION FORMATION
+   ========================================= */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(20,15,45,.75);backdrop-filter:blur(6px);
+  z-index:9998;display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;
+}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{
+  background:#fff;border-radius:var(--radius-lg);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;
+  animation:modalIn .4s cubic-bezier(.2,.7,.3,1);border-top:6px solid var(--orange);
+}
+.modal__close{
+  position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;
+  background:var(--off-white);border:none;cursor:pointer;font-size:1.2rem;color:var(--navy);
+  display:flex;align-items:center;justify-content:center;transition:all .25s ease;z-index:2;
+  font-family:'Poppins',sans-serif;font-weight:700;
+}
+.modal__close:hover{background:var(--orange);color:#fff;transform:rotate(90deg)}
+.modal__header{padding:32px 32px 20px;text-align:center;border-bottom:1px solid var(--line)}
+.modal__icon{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:rgba(234,107,49,.1);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--orange)}
+.modal__header h3{font-size:1.3rem;margin-bottom:8px;color:var(--navy)}
+.modal__header p{font-size:.88rem;color:var(--gray);line-height:1.5}
+.modal__formation{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 14px;background:rgba(234,107,49,.08);border:1px solid rgba(234,107,49,.25);border-radius:999px;font-size:.82rem;font-weight:600;color:var(--orange);text-align:left;max-width:100%}
+.modal__formation span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+.modal__body{padding:28px 32px 32px;display:grid;gap:16px}
+.modal__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal__note{font-size:.78rem;color:var(--gray);text-align:center;line-height:1.5;margin-top:4px;padding:12px 16px;background:var(--off-white);border-radius:10px;border-left:3px solid var(--orange)}
+.modal__note strong{color:var(--navy)}
+
+/* =========================================
+   BURGER MENU À PARTIR DE 1024px
+   ========================================= */
 @media (max-width:1024px){
   .about__inner,.contact__inner,.detail__grid{grid-template-columns:1fr;gap:40px}
   .services__grid,.formations__grid,.realisations__grid{grid-template-columns:repeat(2,1fr)}
   .footer__inner{grid-template-columns:1fr 1fr}
   .detail__side{position:static}
-}
-@media (max-width:768px){
+
+  /* Menu mobile */
   .nav{
-    position:fixed;
-    top:104px; left:0; right:0;
-    background:var(--white);
-    padding:24px;
-    border-bottom:1px solid var(--line);
-    transform:translateY(-120%);
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-    transition:transform .3s ease, opacity .3s ease, visibility .3s;
-    box-shadow:var(--shadow);
-    max-height:calc(100vh - 104px);
-    overflow-y:auto;
+    position:fixed;top:88px;left:0;right:0;background:var(--white);padding:16px 24px 24px;
+    border-bottom:1px solid var(--line);transform:translateY(-120%);opacity:0;visibility:hidden;
+    pointer-events:none;transition:transform .3s ease,opacity .3s ease,visibility .3s;
+    box-shadow:var(--shadow);max-height:calc(100vh - 88px);overflow-y:auto;
   }
   .nav.open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto}
-  .nav ul{flex-direction:column;gap:18px}
+  .nav ul{flex-direction:column;gap:0;align-items:stretch}
+  .nav a{display:block;padding:14px 0}
+  .nav a::after{display:none}
   .header__cta{display:none}
   .burger{display:flex}
+  .header__inner,.header.scrolled .header__inner{height:88px}
+  .hero-slider{margin-top:88px}
+
+  /* CTA dans le menu mobile */
+  .nav__cta{display:block;margin-top:12px;list-style:none}
+  .nav__cta .btn{width:100%;color:#fff}
+  .nav__cta .btn::after{display:none}
+}
+
+/* =========================================
+   MOBILE — Ajustements spécifiques
+   ========================================= */
+@media (max-width:768px){
   .services__grid,.formations__grid,.realisations__grid{grid-template-columns:1fr}
   .footer__inner{grid-template-columns:1fr}
   .section{padding:70px 0}
   .contact__form{padding:28px}
   .about__floating{right:12px;bottom:-16px}
-  .page-hero{padding:140px 0 50px}
-  .header__inner,.header.scrolled .header__inner{height:88px}
+  .page-hero{padding:130px 0 50px}
+
   .logo__circle{width:60px;height:60px}
   .header.scrolled .logo__circle{width:56px;height:56px}
   .logo__name-top,.logo__name-bottom{font-size:1.15rem}
   .header.scrolled .logo__name-top,
   .header.scrolled .logo__name-bottom{font-size:1.05rem}
-  .hero-slider{height:auto;min-height:520px;max-height:none;padding:80px 0 60px;margin-top:88px}
+
+  /* Hero : contenu en flux pour éviter le débordement */
+  .hero-slider{height:auto;min-height:560px;max-height:none;padding:0;margin-top:88px}
+  .hero-slider__content{position:relative;inset:auto;min-height:560px;padding:48px 0 90px;align-items:center}
+  .hero-slider__slide::after{background:linear-gradient(rgba(30,23,64,.8),rgba(30,23,64,.8))}
   .hero-slider__title{font-size:1.9rem}
   .hero-slider__desc{font-size:.98rem}
   .hero-slider__inner{padding:0 20px}
+  .hero-slider__actions{flex-direction:column;gap:10px;width:100%}
+  .hero-slider__actions .btn{width:100%}
+
   .formation-card__actions{flex-direction:column}
-  .back-to-top{width:44px;height:44px;bottom:20px;left:20px}
   .whatsapp-float{width:52px;height:52px;bottom:20px;right:20px}
   .preloader__circle{width:110px;height:110px}
   .preloader__name{font-size:1.4rem}
   .preloader__bar{width:170px}
+
+  .modal{padding:0;margin:auto}
+  .modal__header{padding:24px 22px 16px}
+  .modal__body{padding:22px}
+  .modal__row{grid-template-columns:1fr}
+  .modal__formation span{max-width:220px}
+}
+
+/* =========================================
+   TRÈS PETITS ÉCRANS — Ajustement logo
+   ========================================= */
+@media (max-width:400px){
+  .logo{gap:10px}
+  .logo__circle,.header.scrolled .logo__circle{width:48px;height:48px}
+  .logo__name-top,.logo__name-bottom,
+  .header.scrolled .logo__name-top,
+  .header.scrolled .logo__name-bottom{font-size:1rem}
 }
 
 /* ---------- Accessibilité mouvement réduit ---------- */
 @media (prefers-reduced-motion: reduce){
-  *, *::before, *::after{
+  *,*::before,*::after{
     animation-duration:.01ms !important;
     animation-iteration-count:1 !important;
     transition-duration:.01ms !important;
   }
-  .reveal,.reveal-left,.reveal-right,.reveal-zoom,.reveal-rotate{opacity:1;transform:none}
+  main .reveal,main .reveal-left,main .reveal-right,main .reveal-zoom,main .reveal-rotate{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -772,6 +588,7 @@ img{max-width:100%;display:block}
         <li><a data-nav="formations" href="#/formations">Formations</a></li>
         <li><a data-nav="realisations" href="#/realisations">Réalisations</a></li>
         <li><a data-nav="contact" href="#/contact">Contact</a></li>
+        <li class="nav__cta"><a href="#/contact" class="btn btn--primary">Demander un devis</a></li>
       </ul>
     </nav>
     <a href="#/contact" class="btn btn--primary header__cta">Demander un devis</a>
@@ -833,178 +650,73 @@ img{max-width:100%;display:block}
 </footer>
 
 <a href="https://wa.me/22661040464" class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
-<button class="back-to-top" id="backToTop" aria-label="Retour en haut">↑</button>
+
+<!-- ============ MODAL INSCRIPTION ============ -->
+<div class="modal-overlay" id="inscriptionModal" role="dialog" aria-modal="true" aria-labelledby="inscriptionTitle">
+  <div class="modal">
+    <button class="modal__close" id="modalClose" aria-label="Fermer">✕</button>
+
+    <div class="modal__header">
+      <div class="modal__icon">🎓</div>
+      <h3 id="inscriptionTitle">Inscription à la formation</h3>
+      <p>Remplissez ces informations, votre demande sera envoyée directement via WhatsApp.</p>
+      <div class="modal__formation" id="modalFormation">
+        <span>📘 Formation</span>
+      </div>
+    </div>
+
+    <form class="modal__body" id="inscriptionForm">
+      <div class="modal__row">
+        <div class="field">
+          <label for="insNom">Nom *</label>
+          <input type="text" id="insNom" name="nom" required placeholder="Ex : Ouédraogo">
+        </div>
+        <div class="field">
+          <label for="insPrenom">Prénom *</label>
+          <input type="text" id="insPrenom" name="prenom" required placeholder="Ex : Awa">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="insWhatsapp">Numéro WhatsApp *</label>
+        <input type="tel" id="insWhatsapp" name="whatsapp" required placeholder="Ex : +226 61 04 04 64" inputmode="tel">
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full">
+        💬 Envoyer via WhatsApp
+      </button>
+
+      <div class="modal__note">
+        <strong>Le bouton ouvre WhatsApp</strong> avec un message pré-rempli adressé à Mahmar Group. Il vous suffira de cliquer sur <em>Envoyer</em>.
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
 /* =========================================
    MAHMAR GROUP — Application JS
    ========================================= */
 
+// ---------- CONFIG ----------
+const WHATSAPP_COMPANY = "22661040464";
+
 // ---------- DATA ----------
 const FORMATIONS = [
-  {
-    id: 1,
-    title: "Communication digitale & réseaux sociaux",
-    domain: "Communication",
-    status: "ouverte", statusLabel: "Inscriptions ouvertes",
-    date: "À définir", duration: "5 jours", location: "Ouagadougou",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/women/44.jpg",
-    trainerName: "Mme Aïcha Kaboré",
-    description: "Maîtrisez les stratégies de contenu, la gestion de communauté et les outils d'analyse pour booster votre présence en ligne.",
-    objectives: [
-      "Comprendre les fondamentaux du digital et des réseaux sociaux",
-      "Construire une ligne éditoriale cohérente",
-      "Créer et planifier du contenu engageant",
-      "Mesurer la performance de ses actions digitales"
-    ],
-    program: [
-      "Module 1 — Panorama du digital et enjeux actuels",
-      "Module 2 — Stratégie de contenu et ligne éditoriale",
-      "Module 3 — Gestion de communauté et modération",
-      "Module 4 — Publicité en ligne et ciblage",
-      "Module 5 — Analyse et reporting"
-    ]
-  },
-  {
-    id: 2,
-    title: "Leadership & management d'équipe",
-    domain: "Développement personnel",
-    status: "avenir", statusLabel: "À venir",
-    date: "Session 2026", duration: "3 jours", location: "Présentiel",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/men/32.jpg",
-    trainerName: "M. Ibrahim Sawadogo",
-    description: "Développez vos compétences de leader : motivation, délégation, gestion de conflits et communication interne.",
-    objectives: [
-      "Identifier son style de leadership",
-      "Motiver et fédérer une équipe",
-      "Gérer les conflits avec méthode",
-      "Déléguer efficacement"
-    ],
-    program: [
-      "Module 1 — Les styles de leadership",
-      "Module 2 — Communication interpersonnelle",
-      "Module 3 — Motivation et engagement",
-      "Module 4 — Gestion des conflits",
-      "Module 5 — Délégation et prise de décision"
-    ]
-  },
-  {
-    id: 3,
-    title: "Production vidéo pour institutions",
-    domain: "Audiovisuel",
-    status: "ouverte", statusLabel: "Inscriptions ouvertes",
-    date: "À définir", duration: "7 jours", location: "Ouagadougou",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/men/45.jpg",
-    trainerName: "M. Karim Ouédraogo",
-    description: "De l'écriture au montage : réalisez des capsules professionnelles pour vos campagnes de communication.",
-    objectives: [
-      "Écrire un scénario et un storyboard",
-      "Maîtriser les bases du cadrage et de la lumière",
-      "Enregistrer un son de qualité",
-      "Monter et exporter une vidéo finale"
-    ],
-    program: [
-      "Module 1 — Écriture et storyboard",
-      "Module 2 — Cadrage et lumière",
-      "Module 3 — Prise de son",
-      "Module 4 — Tournage en conditions réelles",
-      "Module 5 — Montage et post-production",
-      "Module 6 — Diffusion et formats"
-    ]
-  },
-  {
-    id: 4,
-    title: "Photographie institutionnelle",
-    domain: "Image",
-    status: "avenir", statusLabel: "À venir",
-    date: "Session 2026", duration: "4 jours", location: "Présentiel",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/women/65.jpg",
-    trainerName: "Mme Fatou Diallo",
-    description: "Cadrage, lumière, retouche : valorisez l'image de votre institution à travers des visuels de qualité.",
-    objectives: [
-      "Maîtriser les réglages essentiels",
-      "Composer une image professionnelle",
-      "Réaliser des portraits institutionnels",
-      "Retoucher et livrer des visuels"
-    ],
-    program: [
-      "Module 1 — Bases techniques",
-      "Module 2 — Composition et cadrage",
-      "Module 3 — Portrait et reportage",
-      "Module 4 — Retouche et diffusion"
-    ]
-  },
-  {
-    id: 5,
-    title: "Organisation d'événements professionnels",
-    domain: "Événementiel",
-    status: "encours", statusLabel: "En cours",
-    date: "Session en cours", duration: "6 jours", location: "Ouagadougou",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/women/28.jpg",
-    trainerName: "Mme Nadège Traoré",
-    description: "Planification, logistique, coordination : maîtrisez toutes les étapes d'un événement réussi.",
-    objectives: [
-      "Planifier un événement de A à Z",
-      "Gérer la logistique et les prestataires",
-      "Coordonner les équipes le jour J",
-      "Évaluer et capitaliser après événement"
-    ],
-    program: [
-      "Module 1 — Cadrage et objectifs",
-      "Module 2 — Planification et budget",
-      "Module 3 — Logistique et prestataires",
-      "Module 4 — Coordination le jour J",
-      "Module 5 — Bilan et capitalisation"
-    ]
-  },
-  {
-    id: 6,
-    title: "Inclusion & protection de l'enfance",
-    domain: "Social",
-    status: "avenir", statusLabel: "À venir",
-    date: "Session 2026", duration: "5 jours", location: "À préciser",
-    price: "Sur demande",
-    img: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800&q=80",
-    trainerImg: "https://randomuser.me/api/portraits/men/52.jpg",
-    trainerName: "M. Samuel Zongo",
-    description: "Formation spécialisée pour les acteurs institutionnels engagés dans la protection des mineurs.",
-    objectives: [
-      "Comprendre les enjeux de protection",
-      "Identifier les situations à risque",
-      "Appliquer les procédures adaptées",
-      "Travailler en réseau"
-    ],
-    program: [
-      "Module 1 — Cadre juridique et institutionnel",
-      "Module 2 — Identification des risques",
-      "Module 3 — Procédures et protocoles",
-      "Module 4 — Approche inclusive",
-      "Module 5 — Travail en réseau"
-    ]
-  }
+  { id: 1, title: "Communication digitale & réseaux sociaux", domain: "Communication", status: "ouverte", statusLabel: "Inscriptions ouvertes", date: "À définir", duration: "5 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/44.jpg", trainerName: "Mme Aïcha Kaboré", description: "Maîtrisez les stratégies de contenu, la gestion de communauté et les outils d'analyse pour booster votre présence en ligne.", objectives: ["Comprendre les fondamentaux du digital et des réseaux sociaux","Construire une ligne éditoriale cohérente","Créer et planifier du contenu engageant","Mesurer la performance de ses actions digitales"], program: ["Module 1 — Panorama du digital et enjeux actuels","Module 2 — Stratégie de contenu et ligne éditoriale","Module 3 — Gestion de communauté et modération","Module 4 — Publicité en ligne et ciblage","Module 5 — Analyse et reporting"] },
+  { id: 2, title: "Leadership & management d'équipe", domain: "Développement personnel", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "3 jours", location: "Présentiel", price: "Sur demande", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/32.jpg", trainerName: "M. Ibrahim Sawadogo", description: "Développez vos compétences de leader : motivation, délégation, gestion de conflits et communication interne.", objectives: ["Identifier son style de leadership","Motiver et fédérer une équipe","Gérer les conflits avec méthode","Déléguer efficacement"], program: ["Module 1 — Les styles de leadership","Module 2 — Communication interpersonnelle","Module 3 — Motivation et engagement","Module 4 — Gestion des conflits","Module 5 — Délégation et prise de décision"] },
+  { id: 3, title: "Production vidéo pour institutions", domain: "Audiovisuel", status: "ouverte", statusLabel: "Inscriptions ouvertes", date: "À définir", duration: "7 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/45.jpg", trainerName: "M. Karim Ouédraogo", description: "De l'écriture au montage : réalisez des capsules professionnelles pour vos campagnes de communication.", objectives: ["Écrire un scénario et un storyboard","Maîtriser les bases du cadrage et de la lumière","Enregistrer un son de qualité","Monter et exporter une vidéo finale"], program: ["Module 1 — Écriture et storyboard","Module 2 — Cadrage et lumière","Module 3 — Prise de son","Module 4 — Tournage en conditions réelles","Module 5 — Montage et post-production","Module 6 — Diffusion et formats"] },
+  { id: 4, title: "Photographie institutionnelle", domain: "Image", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "4 jours", location: "Présentiel", price: "Sur demande", img: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/65.jpg", trainerName: "Mme Fatou Diallo", description: "Cadrage, lumière, retouche : valorisez l'image de votre institution à travers des visuels de qualité.", objectives: ["Maîtriser les réglages essentiels","Composer une image professionnelle","Réaliser des portraits institutionnels","Retoucher et livrer des visuels"], program: ["Module 1 — Bases techniques","Module 2 — Composition et cadrage","Module 3 — Portrait et reportage","Module 4 — Retouche et diffusion"] },
+  { id: 5, title: "Organisation d'événements professionnels", domain: "Événementiel", status: "encours", statusLabel: "En cours", date: "Session en cours", duration: "6 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/28.jpg", trainerName: "Mme Nadège Traoré", description: "Planification, logistique, coordination : maîtrisez toutes les étapes d'un événement réussi.", objectives: ["Planifier un événement de A à Z","Gérer la logistique et les prestataires","Coordonner les équipes le jour J","Évaluer et capitaliser après événement"], program: ["Module 1 — Cadrage et objectifs","Module 2 — Planification et budget","Module 3 — Logistique et prestataires","Module 4 — Coordination le jour J","Module 5 — Bilan et capitalisation"] },
+  { id: 6, title: "Inclusion & protection de l'enfance", domain: "Social", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "5 jours", location: "À préciser", price: "Sur demande", img: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/52.jpg", trainerName: "M. Samuel Zongo", description: "Formation spécialisée pour les acteurs institutionnels engagés dans la protection des mineurs.", objectives: ["Comprendre les enjeux de protection","Identifier les situations à risque","Appliquer les procédures adaptées","Travailler en réseau"], program: ["Module 1 — Cadre juridique et institutionnel","Module 2 — Identification des risques","Module 3 — Procédures et protocoles","Module 4 — Approche inclusive","Module 5 — Travail en réseau"] }
 ];
 
 const SERVICES = [
-  { num:"01", icon:"🎓", title:"Formations Professionnelles", desc:"Un programme varié pour renforcer les compétences et accompagner le développement professionnel.",
-    items:["Communication & marketing","Inclusion & protection de l'enfance","Développement personnel & leadership","Formations spécialisées selon besoins"] },
-  { num:"02", icon:"🖨️", title:"Impression Tout Support", desc:"Des solutions d'impression professionnelles adaptées à tous vos types de supports.",
-    items:["Affiches, flyers, brochures, magazines","Bâches, panneaux, kakémonos","Cartes de visite, dépliants","Impression grand format & signalétique"] },
-  { num:"03", icon:"🎬", title:"Production Vidéo", desc:"Des contenus vidéo modernes et dynamiques répondant aux standards professionnels.",
-    items:["Capsules vidéo pour réseaux sociaux","Documentaires institutionnels","Spots publicitaires TV & digital","Montage & post-production"] },
-  { num:"04", icon:"📸", title:"Photographie Institutionnelle", desc:"Valorisez votre image à travers des visuels professionnels et soignés.",
-    items:["Reportages photo d'événements","Portraits professionnels","Couvertures médiatiques institutionnelles","Photographie pour supports de communication"] },
-  { num:"05", icon:"📅", title:"Planification d'Événements", desc:"Nous vous accompagnons dans l'organisation et la réussite de vos événements.",
-    items:["Conférences & séminaires","Ateliers de formation","Lancements de projets","Événements institutionnels & d'entreprise"] }
+  { num:"01", icon:"🎓", title:"Formations Professionnelles", desc:"Un programme varié pour renforcer les compétences et accompagner le développement professionnel.", items:["Communication & marketing","Inclusion & protection de l'enfance","Développement personnel & leadership","Formations spécialisées selon besoins"] },
+  { num:"02", icon:"🖨️", title:"Impression Tout Support", desc:"Des solutions d'impression professionnelles adaptées à tous vos types de supports.", items:["Affiches, flyers, brochures, magazines","Bâches, panneaux, kakémonos","Cartes de visite, dépliants","Impression grand format & signalétique"] },
+  { num:"03", icon:"🎬", title:"Production Vidéo", desc:"Des contenus vidéo modernes et dynamiques répondant aux standards professionnels.", items:["Capsules vidéo pour réseaux sociaux","Documentaires institutionnels","Spots publicitaires TV & digital","Montage & post-production"] },
+  { num:"04", icon:"📸", title:"Photographie Institutionnelle", desc:"Valorisez votre image à travers des visuels professionnels et soignés.", items:["Reportages photo d'événements","Portraits professionnels","Couvertures médiatiques institutionnelles","Photographie pour supports de communication"] },
+  { num:"05", icon:"📅", title:"Planification d'Événements", desc:"Nous vous accompagnons dans l'organisation et la réussite de vos événements.", items:["Conférences & séminaires","Ateliers de formation","Lancements de projets","Événements institutionnels & d'entreprise"] }
 ];
 
 const REALISATIONS = [
@@ -1017,24 +729,9 @@ const REALISATIONS = [
 ];
 
 const SLIDES = [
-  {
-    src: "Mahamar/A_propos.jpg",
-    badge: "Bienvenue chez Mahmar Group",
-    title: "Accompagner vos projets vers <span class='text-orange'>l'excellence</span>.",
-    desc: "Une entreprise multidisciplinaire dédiée à la réalisation de vos projets professionnels et communicationnels."
-  },
-  {
-    src: "Mahamar/Acceuil.jpg",
-    badge: "Nos services",
-    title: "Des solutions <span class='text-orange'>complètes</span> pour votre image.",
-    desc: "Formations, impression, production vidéo, photographie et événementiel — une prise en charge totale de A à Z."
-  },
-  {
-    src: "Mahamar/Acceuil2.jpg",
-    badge: "Notre engagement",
-    title: "Une équipe <span class='text-orange'>passionnée</span> à votre service.",
-    desc: "Qualité, innovation et satisfaction client : notre engagement au quotidien pour la réussite de vos projets."
-  }
+  { src: "Mahamar/A_propos.jpg", badge: "Bienvenue chez Mahmar Group", title: "Accompagner vos projets vers <span class='text-orange'>l'excellence</span>.", desc: "Une entreprise multidisciplinaire dédiée à la réalisation de vos projets professionnels et communicationnels." },
+  { src: "Mahamar/Acceuil.jpg", badge: "Nos services", title: "Des solutions <span class='text-orange'>complètes</span> pour votre image.", desc: "Formations, impression, production vidéo, photographie et événementiel — une prise en charge totale de A à Z." },
+  { src: "Mahamar/Acceuil2.jpg", badge: "Notre engagement", title: "Une équipe <span class='text-orange'>passionnée</span> à votre service.", desc: "Qualité, innovation et satisfaction client : notre engagement au quotidien pour la réussite de vos projets." }
 ];
 
 // ---------- HELPERS ----------
@@ -1080,22 +777,18 @@ const FORMATION_CARD = (f) => `
         </div>
       </div>
     </div>
-
     <div class="formation-card__body">
       <span class="formation-card__domain">${escapeHTML(f.domain)}</span>
       <h3>${escapeHTML(f.title)}</h3>
-
       <div class="formation-card__meta">
         <span>📅 ${escapeHTML(f.date)}</span>
         <span>⏱ ${escapeHTML(f.duration)}</span>
         <span>📍 ${escapeHTML(f.location)}</span>
       </div>
-
       <p class="formation-card__desc">${escapeHTML(f.description)}</p>
-
       <div class="formation-card__actions">
         <a href="#/formation/${f.id}" class="btn btn--ghost btn--sm">Voir la formation</a>
-        <a href="#/contact" class="btn btn--primary btn--sm">S'inscrire</a>
+        <button type="button" class="btn btn--primary btn--sm btn-inscription" data-formation-id="${f.id}">S'inscrire</button>
       </div>
     </div>
   </article>`;
@@ -1107,7 +800,6 @@ const HERO_SLIDER = `
         <img src="${s.src}" alt="${escapeHTML(s.badge)}" loading="${i===0?'eager':'lazy'}">
       </div>
     `).join('')}
-
     <div class="hero-slider__content">
       <div class="hero-slider__inner">
         <div class="hero-slider__text" id="heroText">
@@ -1121,11 +813,9 @@ const HERO_SLIDER = `
         </div>
       </div>
     </div>
-
     <div class="hero-slider__dots" id="heroDots">
       ${SLIDES.map((_,i) => `<button class="dot${i===0?' active':''}" data-slide="${i}" aria-label="Slide ${i+1}"></button>`).join('')}
     </div>
-
     <div class="hero-slider__progress">
       <div class="hero-slider__progress-bar" id="heroProgress"></div>
     </div>
@@ -1170,35 +860,10 @@ const CONTACT_INFO = `
     <h2>Parlons de votre <span class="text-orange">projet</span>.</h2>
     <p>Un devis, une question, une demande de formation ? Écrivez-nous, nous vous répondons dans les plus brefs délais.</p>
     <ul class="contact__list">
-      <li>
-        <span class="ico">📞</span>
-        <div>
-          <strong>Téléphone</strong>
-          <a href="tel:+22661040464">+226 61 04 04 64</a><br>
-          <a href="tel:54851931">54 85 19 31</a>
-        </div>
-      </li>
-      <li>
-        <span class="ico">✉️</span>
-        <div>
-          <strong>Email</strong>
-          <a href="mailto:mahmargroup@gmail.com">mahmargroup@gmail.com</a>
-        </div>
-      </li>
-      <li>
-        <span class="ico">💬</span>
-        <div>
-          <strong>WhatsApp</strong>
-          <a href="https://wa.me/22661040464" target="_blank" rel="noopener">Discuter maintenant</a>
-        </div>
-      </li>
-      <li>
-        <span class="ico">📍</span>
-        <div>
-          <strong>Localisation</strong>
-          <span style="font-size:.92rem;color:var(--gray)">Burkina Faso</span>
-        </div>
-      </li>
+      <li><span class="ico">📞</span><div><strong>Téléphone</strong><a href="tel:+22661040464">+226 61 04 04 64</a><br><a href="tel:54851931">54 85 19 31</a></div></li>
+      <li><span class="ico">✉️</span><div><strong>Email</strong><a href="mailto:mahmargroup@gmail.com">mahmargroup@gmail.com</a></div></li>
+      <li><span class="ico">💬</span><div><strong>WhatsApp</strong><a href="https://wa.me/22661040464" target="_blank" rel="noopener">Discuter maintenant</a></div></li>
+      <li><span class="ico">📍</span><div><strong>Localisation</strong><span style="font-size:.92rem;color:var(--gray)">Burkina Faso</span></div></li>
     </ul>
   </div>`;
 
@@ -1248,9 +913,7 @@ function pageAccueil(){
         <h2>Nos prochaines sessions</h2>
         <p>Consultez les formations à venir et inscrivez-vous en quelques clics.</p>
       </div>
-      <div class="formations__grid">
-        ${FORMATIONS.slice(0,3).map(FORMATION_CARD).join('')}
-      </div>
+      <div class="formations__grid">${FORMATIONS.slice(0,3).map(FORMATION_CARD).join('')}</div>
       <div style="text-align:center;margin-top:40px" class="reveal">
         <a href="#/formations" class="btn btn--ghost">Voir toutes les formations</a>
       </div>
@@ -1280,10 +943,7 @@ function pageApropos(){
     <div class="container about__inner">
       <div class="about__visual reveal-left">
         <img src="Mahamar/A_propos.jpg" alt="Équipe Mahmar Group">
-        <div class="about__floating">
-          <strong>Notre mission</strong>
-          <span>Accompagner vers l'excellence</span>
-        </div>
+        <div class="about__floating"><strong>Notre mission</strong><span>Accompagner vers l'excellence</span></div>
       </div>
       <div class="about__content reveal-right">
         <span class="eyebrow">Qui sommes-nous ?</span>
@@ -1297,36 +957,18 @@ function pageApropos(){
 
   <section class="section section--alt">
     <div class="container">
-      <div class="section__head reveal">
-        <span class="eyebrow">Nos piliers</span>
-        <h2>Mission · Vision · Valeurs</h2>
-      </div>
+      <div class="section__head reveal"><span class="eyebrow">Nos piliers</span><h2>Mission · Vision · Valeurs</h2></div>
       <div class="services__grid">
-        <article class="service-card reveal-zoom">
-          <div class="service-card__icon">🎯</div>
-          <h3>Notre mission</h3>
-          <p>Accompagner les institutions dans la réalisation de leurs projets communicationnels orientés vers l'excellence.</p>
-        </article>
-        <article class="service-card reveal-zoom">
-          <div class="service-card__icon">🔭</div>
-          <h3>Notre vision</h3>
-          <p>Devenir une référence en matière de communication institutionnelle et de formation professionnelle.</p>
-        </article>
-        <article class="service-card reveal-zoom">
-          <div class="service-card__icon">💎</div>
-          <h3>Nos valeurs</h3>
-          <p>Qualité, innovation, satisfaction client, professionnalisme, sens du détail et prise en charge complète.</p>
-        </article>
+        <article class="service-card reveal-zoom"><div class="service-card__icon">🎯</div><h3>Notre mission</h3><p>Accompagner les institutions dans la réalisation de leurs projets communicationnels orientés vers l'excellence.</p></article>
+        <article class="service-card reveal-zoom"><div class="service-card__icon">🔭</div><h3>Notre vision</h3><p>Devenir une référence en matière de communication institutionnelle et de formation professionnelle.</p></article>
+        <article class="service-card reveal-zoom"><div class="service-card__icon">💎</div><h3>Nos valeurs</h3><p>Qualité, innovation, satisfaction client, professionnalisme, sens du détail et prise en charge complète.</p></article>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="section__head reveal">
-        <span class="eyebrow">Nos domaines</span>
-        <h2>Domaines d'intervention</h2>
-      </div>
+      <div class="section__head reveal"><span class="eyebrow">Nos domaines</span><h2>Domaines d'intervention</h2></div>
       <div class="services__grid">${SERVICES_CARDS()}</div>
     </div>
   </section>
@@ -1342,7 +984,6 @@ function pageServices(){
       <p>Cinq pôles d'expertise complémentaires pour une prise en charge totale de vos projets.</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container">
       <div class="services__grid">${SERVICES_CARDS()}${CTA_CARD}</div>
@@ -1360,7 +1001,6 @@ function pageFormations(){
       <p>Consultez les formations à venir et inscrivez-vous en quelques clics.</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container">
       <div class="formations__filters">
@@ -1379,7 +1019,6 @@ function pageFormations(){
 function pageFormationDetail(id){
   const f = FORMATIONS.find(x => x.id === Number(id));
   if(!f) return `<section class="section"><div class="container"><p>Formation introuvable. <a href="#/formations" class="link-arrow">Retour au catalogue</a></p></div></section>`;
-
   return `
   <section class="page-hero">
     <div class="container">
@@ -1388,35 +1027,29 @@ function pageFormationDetail(id){
       <p>${escapeHTML(f.description)}</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container detail__grid">
       <div class="detail__content reveal-left">
         <span class="status status--${f.status}" style="margin-bottom:16px;display:inline-block">${escapeHTML(f.statusLabel)}</span>
         <h2>Présentation</h2>
         <p>${escapeHTML(f.description)}</p>
-
         <h3>Objectifs pédagogiques</h3>
         <ul>${f.objectives.map(o=>`<li>${escapeHTML(o)}</li>`).join('')}</ul>
-
         <h3>Programme détaillé</h3>
         <ul>${f.program.map(p=>`<li>${escapeHTML(p)}</li>`).join('')}</ul>
-
         <h3>Public concerné</h3>
         <p>${escapeHTML(f.audience || 'À préciser')}</p>
-
         <h3>Formateur</h3>
         <p>${escapeHTML(f.trainerName || 'Équipe Mahmar Group')}</p>
       </div>
-
       <aside class="detail__side reveal-right">
         <h4>Informations pratiques</h4>
         <div class="meta-row"><span>Date</span><span>${escapeHTML(f.date)}</span></div>
         <div class="meta-row"><span>Durée</span><span>${escapeHTML(f.duration)}</span></div>
         <div class="meta-row"><span>Lieu</span><span>${escapeHTML(f.location)}</span></div>
         <div class="meta-row"><span>Tarif</span><span>${escapeHTML(f.price)}</span></div>
-        <a href="#/contact" class="btn btn--primary btn--full">S'inscrire / Demander infos</a>
-        <a href="https://wa.me/22661040464?text=${encodeURIComponent('Bonjour, je souhaite des informations sur la formation : ' + f.title)}" target="_blank" rel="noopener" class="btn btn--ghost btn--full" style="margin-top:10px">WhatsApp</a>
+        <button type="button" class="btn btn--primary btn--full btn-inscription" data-formation-id="${f.id}">S'inscrire à cette formation</button>
+        <a href="https://wa.me/${WHATSAPP_COMPANY}?text=${encodeURIComponent('Bonjour, je souhaite des informations sur la formation : ' + f.title)}" target="_blank" rel="noopener" class="btn btn--ghost btn--full" style="margin-top:10px">WhatsApp</a>
       </aside>
     </div>
   </section>
@@ -1432,7 +1065,6 @@ function pageRealisations(){
       <p>Découvrez concrètement notre savoir-faire à travers nos projets.</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container">
       <div class="realisations__filters">
@@ -1458,7 +1090,6 @@ function pageContact(){
       <p>Notre équipe vous répond dans les plus brefs délais.</p>
     </div>
   </section>
-
   <section class="section">
     <div class="container contact__inner">
       ${CONTACT_INFO}
@@ -1468,7 +1099,7 @@ function pageContact(){
   `;
 }
 
-// ---------- RENDER FORMATIONS ----------
+// ---------- RENDER ----------
 function renderFormationsGrid(filter='all'){
   const grid = $('#formationsGrid');
   if(!grid) return;
@@ -1478,7 +1109,6 @@ function renderFormationsGrid(filter='all'){
   setupReveals();
 }
 
-// ---------- RENDER REALISATIONS ----------
 function renderRealisationsGrid(filter='all'){
   const grid = $('#realisationsGrid');
   if(!grid) return;
@@ -1495,7 +1125,7 @@ function renderRealisationsGrid(filter='all'){
   setupReveals();
 }
 
-// ---------- DIAPORAMA ----------
+// ---------- SLIDER ----------
 let sliderTimer = null;
 let currentSlide = 0;
 const SLIDE_DURATION = 4000;
@@ -1503,7 +1133,6 @@ const SLIDE_DURATION = 4000;
 function initSlider(){
   const slider = $('#heroSlider');
   if(!slider) return;
-
   const slides = $$('.hero-slider__slide', slider);
   const dots = $$('.dot', slider);
   const badgeEl = $('#heroBadge');
@@ -1511,17 +1140,11 @@ function initSlider(){
   const descEl = $('#heroDesc');
   const textEl = $('#heroText');
   const progressEl = $('#heroProgress');
-
   if(!slides.length) return;
 
-  function stopTimer(){
-    if(sliderTimer) clearInterval(sliderTimer);
-    sliderTimer = null;
-  }
-
+  function stopTimer(){ if(sliderTimer) clearInterval(sliderTimer); sliderTimer = null; }
   function updateText(index){
-    const s = SLIDES[index];
-    if(!s) return;
+    const s = SLIDES[index]; if(!s) return;
     badgeEl.textContent = s.badge;
     titleEl.innerHTML = s.title;
     descEl.textContent = s.desc;
@@ -1529,7 +1152,6 @@ function initSlider(){
     void textEl.offsetWidth;
     textEl.classList.add('animating');
   }
-
   function startProgress(){
     if(!progressEl) return;
     progressEl.style.transition = 'none';
@@ -1538,7 +1160,6 @@ function initSlider(){
     progressEl.style.transition = `width ${SLIDE_DURATION}ms linear`;
     progressEl.style.width = '100%';
   }
-
   function goTo(index, resetTimer = true){
     currentSlide = (index + slides.length) % slides.length;
     slides.forEach((s,i) => s.classList.toggle('active', i === currentSlide));
@@ -1550,52 +1171,107 @@ function initSlider(){
       sliderTimer = setInterval(() => goTo(currentSlide + 1, false), SLIDE_DURATION);
     }
   }
-
   goTo(0, true);
   dots.forEach((dot,i) => dot.addEventListener('click', () => goTo(i, true)));
-
   document.addEventListener('visibilitychange', () => {
     if(document.hidden){ stopTimer(); }
     else { goTo(currentSlide, true); }
   });
 }
 
-// ---------- ANIMATIONS AU SCROLL ----------
+// =========================================
+// MODAL INSCRIPTION
+// =========================================
+let currentFormationForInscription = null;
+
+function openInscriptionModal(formationId){
+  const modal = $('#inscriptionModal');
+  const form = $('#inscriptionForm');
+  const formationPill = $('#modalFormation');
+  const formation = FORMATIONS.find(f => f.id === Number(formationId));
+  if(!formation) return;
+
+  currentFormationForInscription = formation;
+  formationPill.innerHTML = `<span>📘 ${escapeHTML(formation.title)}</span>`;
+  form.reset();
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const f = $('#insNom'); if(f) f.focus(); }, 300);
+}
+
+function closeInscriptionModal(){
+  const modal = $('#inscriptionModal');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  currentFormationForInscription = null;
+}
+
+function handleInscriptionSubmit(e){
+  e.preventDefault();
+  const form = e.target;
+  const data = Object.fromEntries(new FormData(form));
+  if(!data.nom || !data.prenom || !data.whatsapp){
+    alert('Veuillez remplir tous les champs.');
+    return;
+  }
+  const formation = currentFormationForInscription;
+  const formationTitle = formation ? formation.title : 'Formation Mahmar Group';
+  const formationDate = formation ? formation.date : '';
+  const formationLocation = formation ? formation.location : '';
+  const message = [
+    `Bonjour Mahmar Group,`,
+    ``,
+    `Je souhaite m'inscrire à la formation :`,
+    `📘 ${formationTitle}`,
+    formationDate ? `📅 Date : ${formationDate}` : '',
+    formationLocation ? `📍 Lieu : ${formationLocation}` : '',
+    ``,
+    `Mes informations :`,
+    `👤 Nom : ${data.nom}`,
+    `👤 Prénom : ${data.prenom}`,
+    `📱 WhatsApp : ${data.whatsapp}`,
+    ``,
+    `Merci de me recontacter pour finaliser mon inscription.`
+  ].filter(Boolean).join('\n');
+
+  const whatsappURL = `https://wa.me/${WHATSAPP_COMPANY}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappURL, '_blank');
+  closeInscriptionModal();
+}
+
+// =========================================
+// ANIMATIONS AU SCROLL
+// =========================================
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
       entry.target.classList.add('visible');
+      // Nettoyer le transitionDelay inline après la fin de la révélation
+      // pour ne pas perturber les transitions de survol.
+      const cleanup = () => {
+        entry.target.style.transitionDelay = '';
+        entry.target.removeEventListener('transitionend', cleanup);
+      };
+      entry.target.addEventListener('transitionend', cleanup);
+      setTimeout(cleanup, 1600); // sécurité si transitionend ne se déclenche pas
       revealObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
 function setupReveals(){
-  // Sections avec révélation par défaut (fade up)
-  const defaultGroups = [
-    { sel: '.section__head' },
-    { sel: '.contact__info' },
-    { sel: '.contact__form' }
-  ];
-  defaultGroups.forEach(g => {
-    $$(g.sel).forEach(el => {
-      if(el.classList.contains('reveal') || el.classList.contains('reveal-left') || el.classList.contains('reveal-right') || el.classList.contains('reveal-zoom')) {
-        // déjà annoté
-      } else {
+  const defaultGroups = ['.section__head','.contact__info','.contact__form'];
+  defaultGroups.forEach(sel => {
+    $$(sel).forEach(el => {
+      if(!el.classList.contains('reveal') && !el.classList.contains('reveal-left') && !el.classList.contains('reveal-right') && !el.classList.contains('reveal-zoom')) {
         el.classList.add('reveal');
       }
       revealObserver.observe(el);
     });
   });
-
-  // Grilles : révélation staggered en zoom
-  const staggerGroups = [
-    { sel: '.service-card' },
-    { sel: '.formation-card' },
-    { sel: '.realisation-card' }
-  ];
-  staggerGroups.forEach(g => {
-    $$(g.sel).forEach((el, i) => {
+  const staggerGroups = ['.service-card','.formation-card','.realisation-card'];
+  staggerGroups.forEach(sel => {
+    $$(sel).forEach((el, i) => {
       if(!el.classList.contains('reveal') && !el.classList.contains('reveal-left') && !el.classList.contains('reveal-right') && !el.classList.contains('reveal-zoom')) {
         el.classList.add('reveal-zoom');
       }
@@ -1603,8 +1279,6 @@ function setupReveals(){
       revealObserver.observe(el);
     });
   });
-
-  // Éléments déjà annotés manuellement
   $$('.reveal, .reveal-left, .reveal-right, .reveal-zoom, .reveal-rotate').forEach(el => {
     revealObserver.observe(el);
   });
@@ -1630,7 +1304,6 @@ function router(){
   const app = $('#app');
   let html = '';
   let meta;
-
   if(sliderTimer) clearInterval(sliderTimer);
 
   if(route === 'formation' && param){
@@ -1647,10 +1320,8 @@ function router(){
   document.title = meta.title;
   app.innerHTML = html;
   window.scrollTo({ top: 0, behavior: 'instant' });
-
   $$('.nav a').forEach(a => a.classList.toggle('active', a.dataset.nav === meta.nav));
   $('#nav').classList.remove('open');
-
   if(meta.after) meta.after();
   setTimeout(setupReveals, 60);
 }
@@ -1689,16 +1360,19 @@ document.addEventListener('click', (e) => {
     rf.classList.add('active');
     renderRealisationsGrid(rf.dataset.rfilter);
   }
+  const inscriptionBtn = e.target.closest('.btn-inscription');
+  if(inscriptionBtn){
+    e.preventDefault();
+    openInscriptionModal(inscriptionBtn.dataset.formationId);
+  }
 });
 
 // ---------- PRELOADER ----------
 (function initPreloader(){
   const preloader = document.getElementById('preloader');
   if(!preloader) return;
-
   const MIN_DURATION = 1600;
   const start = Date.now();
-
   function hidePreloader(){
     const elapsed = Date.now() - start;
     const remaining = Math.max(0, MIN_DURATION - elapsed);
@@ -1707,52 +1381,47 @@ document.addEventListener('click', (e) => {
       setTimeout(() => preloader.remove(), 700);
     }, remaining);
   }
-
-  if(document.readyState === 'complete'){
-    hidePreloader();
-  } else {
+  if(document.readyState === 'complete') hidePreloader();
+  else {
     window.addEventListener('load', hidePreloader);
     setTimeout(hidePreloader, 5000);
   }
 })();
 
-// ---------- SCROLL PROGRESS + BACK TO TOP + HEADER SHRINK ----------
+// ---------- SCROLL PROGRESS + HEADER SHRINK ----------
 const scrollProgressEl = document.getElementById('scrollProgress');
-const backToTopBtn = document.getElementById('backToTop');
+const header = document.getElementById('header');
 
 function onScroll(){
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
   const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
   if(scrollProgressEl) scrollProgressEl.style.width = progress + '%';
-
-  if(backToTopBtn){
-    if(scrollTop > 400) backToTopBtn.classList.add('visible');
-    else backToTopBtn.classList.remove('visible');
-  }
-
   header.classList.toggle('scrolled', scrollTop > 20);
 }
-
 window.addEventListener('scroll', onScroll, { passive: true });
 
-if(backToTopBtn){
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// ---------- MODAL EVENTS ----------
+const modalOverlay = document.getElementById('inscriptionModal');
+const modalCloseBtn = document.getElementById('modalClose');
+const inscriptionForm = document.getElementById('inscriptionForm');
+if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeInscriptionModal);
+if(modalOverlay){
+  modalOverlay.addEventListener('click', (e) => {
+    if(e.target === modalOverlay) closeInscriptionModal();
   });
 }
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('open')) closeInscriptionModal();
+});
+if(inscriptionForm) inscriptionForm.addEventListener('submit', handleInscriptionSubmit);
 
 // ---------- INIT ----------
 document.getElementById('year').textContent = new Date().getFullYear();
-
-const header = document.getElementById('header');
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 burger.addEventListener('click', () => nav.classList.toggle('open'));
-
 onScroll();
-
 window.addEventListener('hashchange', router);
 router();
 </script>
