@@ -66,7 +66,7 @@ img{max-width:100%;display:block}
 
 .whatsapp-float{animation:pulse 2.5s infinite}
 
-/* ---------- Logo (sans cercle, plus grand, typographie unifiée) ---------- */
+/* ---------- Logo (en cercle + nom, plus grand) ---------- */
 .logo{
   display:inline-flex;
   align-items:center;
@@ -77,17 +77,29 @@ img{max-width:100%;display:block}
   transition:transform .3s ease;
 }
 .logo:hover{transform:scale(1.02)}
-.logo__img{
-  height:78px;
-  width:auto;
-  max-width:240px;
-  object-fit:contain;
-  transition:transform .3s ease,filter .3s ease;
-  filter:drop-shadow(0 6px 14px rgba(44,34,80,.18));
+.logo__circle{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  overflow:hidden;
+  flex-shrink:0;
+  background:#fff;
+  border:3px solid var(--orange);
+  box-shadow:0 8px 22px rgba(234,107,49,.35),0 0 0 5px rgba(234,107,49,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:box-shadow .3s ease,transform .3s ease;
 }
-.logo:hover .logo__img{
-  transform:scale(1.05);
-  filter:drop-shadow(0 8px 18px rgba(234,107,49,.4));
+.logo:hover .logo__circle{
+  box-shadow:0 10px 28px rgba(234,107,49,.55),0 0 0 7px rgba(234,107,49,.14);
+  transform:scale(1.03);
+}
+.logo__circle img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
 }
 .logo__name{
   display:flex;
@@ -109,8 +121,10 @@ img{max-width:100%;display:block}
   color:var(--navy);
   letter-spacing:-.02em;
 }
-.logo--light .logo__img{filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))}
-.logo--light .logo__name-top{color:var(--orange)}
+.logo--light .logo__circle{
+  border-color:#fff;
+  box-shadow:0 8px 22px rgba(0,0,0,.35);
+}
 .logo--light .logo__name-bottom{color:#fff}
 
 /* ---------- Header ---------- */
@@ -261,9 +275,10 @@ img{max-width:100%;display:block}
 /* ---------- Sections ---------- */
 .section{padding:100px 0}
 .section--alt{background:var(--off-white)}
-.section__head{text-align:center;max-width:680px;margin:0 auto 60px}
+.section__head{text-align:center;max-width:720px;margin:0 auto 60px}
 .eyebrow{display:inline-block;color:var(--orange);font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
 .section__head h2{margin-bottom:16px}
+.section__head p{font-size:1rem;color:var(--gray);max-width:620px;margin:0 auto;line-height:1.7}
 
 /* ---------- Page banner ---------- */
 .page-hero{padding:170px 0 60px;background:linear-gradient(135deg,var(--navy),var(--navy-light));color:var(--white);text-align:center;position:relative;overflow:hidden}
@@ -316,7 +331,7 @@ img{max-width:100%;display:block}
 .service-card--cta p{color:rgba(255,255,255,.75);margin-bottom:24px}
 
 /* =========================================
-   FORMATIONS — Cartes préparées pour le dynamique
+   FORMATIONS
    ========================================= */
 .formations__filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px}
 .filter{padding:9px 18px;border-radius:999px;border:1px solid var(--line);background:var(--white);color:var(--navy);font-size:.85rem;font-weight:500;cursor:pointer;transition:var(--transition);font-family:'Inter',sans-serif}
@@ -345,11 +360,10 @@ img{max-width:100%;display:block}
   border-color:rgba(234,107,49,.3);
 }
 
-/* Zone image (formateur ou formation) */
 .formation-card__image{
   position:relative;
   width:100%;
-  aspect-ratio:16/10;
+  aspect-ratio:4/3;
   overflow:hidden;
   background:linear-gradient(135deg,var(--navy),var(--navy-light));
 }
@@ -361,7 +375,6 @@ img{max-width:100%;display:block}
 }
 .formation-card:hover .formation-card__image img{transform:scale(1.08)}
 
-/* Badge statut sur l'image */
 .formation-card__status{
   position:absolute;
   top:16px;
@@ -381,13 +394,12 @@ img{max-width:100%;display:block}
 .formation-card__status.status--encours{background:rgba(44,34,80,.95);color:#fff}
 .formation-card__status.status--terminee{background:rgba(107,104,128,.95);color:#fff}
 
-/* Nom du formateur en overlay */
 .formation-card__trainer{
   position:absolute;
   bottom:0;
   left:0;
   right:0;
-  padding:40px 20px 14px;
+  padding:50px 20px 16px;
   background:linear-gradient(to top,rgba(30,23,64,.95),transparent);
   display:flex;
   align-items:center;
@@ -396,8 +408,8 @@ img{max-width:100%;display:block}
   z-index:2;
 }
 .formation-card__trainer-avatar{
-  width:42px;
-  height:42px;
+  width:46px;
+  height:46px;
   border-radius:50%;
   overflow:hidden;
   border:2px solid var(--orange);
@@ -424,7 +436,7 @@ img{max-width:100%;display:block}
 }
 .formation-card__trainer-name{
   font-family:'Poppins',sans-serif;
-  font-size:.92rem;
+  font-size:.95rem;
   font-weight:600;
   color:#fff;
   white-space:nowrap;
@@ -432,7 +444,6 @@ img{max-width:100%;display:block}
   text-overflow:ellipsis;
 }
 
-/* Corps de la carte */
 .formation-card__body{
   padding:24px;
   flex:1;
@@ -457,7 +468,6 @@ img{max-width:100%;display:block}
 }
 .formation-card:hover h3{color:var(--orange)}
 
-/* Méta : date + durée + lieu */
 .formation-card__meta{
   display:flex;
   flex-wrap:wrap;
@@ -485,7 +495,6 @@ img{max-width:100%;display:block}
   flex:1;
 }
 
-/* 2 boutons */
 .formation-card__actions{
   display:flex;
   gap:10px;
@@ -601,7 +610,7 @@ img{max-width:100%;display:block}
   .page-hero{padding:140px 0 50px}
 
   .header__inner{height:88px}
-  .logo__img{height:60px;max-width:170px}
+  .logo__circle{width:60px;height:60px;border-width:2.5px}
   .logo__name-top,.logo__name-bottom{font-size:1.15rem}
 
   .hero-slider{height:auto;min-height:520px;max-height:none;padding:80px 0 60px;margin-top:88px}
@@ -619,7 +628,9 @@ img{max-width:100%;display:block}
 <header class="header" id="header">
   <div class="container header__inner">
     <a class="logo" data-nav="accueil" href="#/">
-      <img src="Mahamar/logo.jpg" alt="Mahmar Group" class="logo__img">
+      <span class="logo__circle">
+        <img src="Mahamar/logo.jpg" alt="Mahmar Group">
+      </span>
       <span class="logo__name">
         <span class="logo__name-top">MAHMAR</span>
         <span class="logo__name-bottom">Group</span>
@@ -648,7 +659,9 @@ img{max-width:100%;display:block}
   <div class="container footer__inner">
     <div>
       <div class="logo logo--light">
-        <img src="Mahamar/logo.jpg" alt="Mahmar Group" class="logo__img">
+        <span class="logo__circle">
+          <img src="Mahamar/logo.jpg" alt="Mahmar Group">
+        </span>
         <span class="logo__name">
           <span class="logo__name-top">MAHMAR</span>
           <span class="logo__name-bottom">Group</span>
@@ -699,11 +712,6 @@ img{max-width:100%;display:block}
    ========================================= */
 
 // ---------- DATA ----------
-// 👉 Pour chaque formation :
-//   - img         : photo principale (formation ou formateur en action)
-//   - trainerImg  : photo du formateur (avatar rond)
-//   - trainerName : nom du formateur
-// Tu pourras brancher ça plus tard sur Firebase / API pour le rendre dynamique.
 const FORMATIONS = [
   {
     id: 1,
@@ -929,7 +937,6 @@ const CTA_CARD = `
     <a href="#/contact" class="btn btn--primary">Nous contacter</a>
   </article>`;
 
-// ===== CARTE FORMATION (dynamique : photo + formateur + titre + date + desc + 2 boutons) =====
 const FORMATION_CARD = (f) => `
   <article class="formation-card" data-id="${f.id}">
     <div class="formation-card__image">
@@ -965,7 +972,6 @@ const FORMATION_CARD = (f) => `
     </div>
   </article>`;
 
-// ===== DIAPORAMA HTML =====
 const HERO_SLIDER = `
   <section class="hero-slider" id="heroSlider">
     ${SLIDES.map((s,i) => `
@@ -1100,6 +1106,8 @@ function pageAccueil(){
     <div class="container">
       <div class="section__head">
         <span class="eyebrow">Nos services</span>
+        <h2>Cinq pôles d'expertise <span class="text-orange">à votre service</span></h2>
+        <p>Des solutions complètes et intégrées pour valoriser votre image et concrétiser vos projets communicationnels.</p>
       </div>
       <div class="services__grid">${SERVICES_CARDS()}${CTA_CARD}</div>
     </div>
