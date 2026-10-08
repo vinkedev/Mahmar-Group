@@ -351,6 +351,22 @@ main .reveal-rotate.visible{opacity:1;transform:none}
 .modal__note strong{color:var(--navy)}
 
 /* =========================================
+   LOGIN MODAL ADMIN
+   ========================================= */
+.login-modal{position:fixed;inset:0;background:rgba(20,15,45,.78);backdrop-filter:blur(8px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.login-modal.open{opacity:1;visibility:visible}
+.login-modal__content{background:#fff;border-radius:22px;width:100%;max-width:400px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.4);border-top:6px solid var(--orange);animation:modalIn .4s cubic-bezier(.2,.7,.3,1);overflow:hidden}
+.login-modal__close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:var(--off-white);border:none;cursor:pointer;font-size:1rem;font-weight:700;color:var(--navy);transition:.25s ease;z-index:2;font-family:'Poppins',sans-serif}
+.login-modal__close:hover{background:var(--orange);color:#fff;transform:rotate(90deg)}
+.login-modal__header{text-align:center;padding:28px 28px 8px}
+.login-modal__icon{width:60px;height:60px;border-radius:50%;background:rgba(234,107,49,.1);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px}
+.login-modal__header h3{font-size:1.2rem;color:var(--navy);margin-bottom:4px}
+.login-modal__header p{font-size:.82rem;color:var(--gray)}
+.login-modal__body{padding:16px 28px 28px;display:grid;gap:10px}
+.login-modal__body .field{margin-bottom:0}
+.login-error{color:#dc2626;font-size:.82rem;text-align:center;min-height:18px;margin:0}
+
+/* =========================================
    BURGER MENU À PARTIR DE 1024px
    ========================================= */
 @media (max-width:1024px){
@@ -581,6 +597,31 @@ main .reveal-rotate.visible{opacity:1;transform:none}
   </div>
 </div>
 
+<!-- ============ MODAL LOGIN ADMIN ============ -->
+<div class="login-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="login-modal__content">
+    <button class="login-modal__close" id="loginClose" aria-label="Fermer">✕</button>
+    <div class="login-modal__header">
+      <div class="login-modal__icon">🔐</div>
+      <h3 id="loginTitle">Espace Administration</h3>
+      <p>Mahmar Group</p>
+    </div>
+    <div class="login-modal__body">
+      <div class="field">
+        <label for="adminPassword">Mot de passe</label>
+        <div style="position:relative">
+          <input type="password" id="adminPassword" placeholder="••••••••" style="padding-right:44px" autocomplete="current-password">
+          <button type="button" id="togglePassword" aria-label="Afficher"
+                  style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem">👁️</button>
+        </div>
+      </div>
+      <button id="submitLogin" class="btn btn--primary btn--full">Se connecter</button>
+      <p class="login-error" id="loginError"></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 /* =========================================
    MAHMAR GROUP — Application JS
@@ -589,31 +630,69 @@ main .reveal-rotate.visible{opacity:1;transform:none}
 // ---------- CONFIG ----------
 const WHATSAPP_COMPANY = "22661040464";
 
-// ---------- DATA ----------
-const FORMATIONS = [
-  { id: 1, title: "Communication digitale & réseaux sociaux", domain: "Communication", status: "ouverte", statusLabel: "Inscriptions ouvertes", date: "À définir", duration: "5 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/44.jpg", trainerName: "Mme Aïcha Kaboré", description: "Maîtrisez les stratégies de contenu, la gestion de communauté et les outils d'analyse pour booster votre présence en ligne.", objectives: ["Comprendre les fondamentaux du digital et des réseaux sociaux","Construire une ligne éditoriale cohérente","Créer et planifier du contenu engageant","Mesurer la performance de ses actions digitales"], program: ["Module 1 — Panorama du digital et enjeux actuels","Module 2 — Stratégie de contenu et ligne éditoriale","Module 3 — Gestion de communauté et modération","Module 4 — Publicité en ligne et ciblage","Module 5 — Analyse et reporting"] },
-  { id: 2, title: "Leadership & management d'équipe", domain: "Développement personnel", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "3 jours", location: "Présentiel", price: "Sur demande", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/32.jpg", trainerName: "M. Ibrahim Sawadogo", description: "Développez vos compétences de leader : motivation, délégation, gestion de conflits et communication interne.", objectives: ["Identifier son style de leadership","Motiver et fédérer une équipe","Gérer les conflits avec méthode","Déléguer efficacement"], program: ["Module 1 — Les styles de leadership","Module 2 — Communication interpersonnelle","Module 3 — Motivation et engagement","Module 4 — Gestion des conflits","Module 5 — Délégation et prise de décision"] },
-  { id: 3, title: "Production vidéo pour institutions", domain: "Audiovisuel", status: "ouverte", statusLabel: "Inscriptions ouvertes", date: "À définir", duration: "7 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/45.jpg", trainerName: "M. Karim Ouédraogo", description: "De l'écriture au montage : réalisez des capsules professionnelles pour vos campagnes de communication.", objectives: ["Écrire un scénario et un storyboard","Maîtriser les bases du cadrage et de la lumière","Enregistrer un son de qualité","Monter et exporter une vidéo finale"], program: ["Module 1 — Écriture et storyboard","Module 2 — Cadrage et lumière","Module 3 — Prise de son","Module 4 — Tournage en conditions réelles","Module 5 — Montage et post-production","Module 6 — Diffusion et formats"] },
-  { id: 4, title: "Photographie institutionnelle", domain: "Image", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "4 jours", location: "Présentiel", price: "Sur demande", img: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/65.jpg", trainerName: "Mme Fatou Diallo", description: "Cadrage, lumière, retouche : valorisez l'image de votre institution à travers des visuels de qualité.", objectives: ["Maîtriser les réglages essentiels","Composer une image professionnelle","Réaliser des portraits institutionnels","Retoucher et livrer des visuels"], program: ["Module 1 — Bases techniques","Module 2 — Composition et cadrage","Module 3 — Portrait et reportage","Module 4 — Retouche et diffusion"] },
-  { id: 5, title: "Organisation d'événements professionnels", domain: "Événementiel", status: "encours", statusLabel: "En cours", date: "Session en cours", duration: "6 jours", location: "Ouagadougou", price: "Sur demande", img: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/women/28.jpg", trainerName: "Mme Nadège Traoré", description: "Planification, logistique, coordination : maîtrisez toutes les étapes d'un événement réussi.", objectives: ["Planifier un événement de A à Z","Gérer la logistique et les prestataires","Coordonner les équipes le jour J","Évaluer et capitaliser après événement"], program: ["Module 1 — Cadrage et objectifs","Module 2 — Planification et budget","Module 3 — Logistique et prestataires","Module 4 — Coordination le jour J","Module 5 — Bilan et capitalisation"] },
-  { id: 6, title: "Inclusion & protection de l'enfance", domain: "Social", status: "avenir", statusLabel: "À venir", date: "Session 2026", duration: "5 jours", location: "À préciser", price: "Sur demande", img: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800&q=80", trainerImg: "https://randomuser.me/api/portraits/men/52.jpg", trainerName: "M. Samuel Zongo", description: "Formation spécialisée pour les acteurs institutionnels engagés dans la protection des mineurs.", objectives: ["Comprendre les enjeux de protection","Identifier les situations à risque","Appliquer les procédures adaptées","Travailler en réseau"], program: ["Module 1 — Cadre juridique et institutionnel","Module 2 — Identification des risques","Module 3 — Procédures et protocoles","Module 4 — Approche inclusive","Module 5 — Travail en réseau"] }
-];
+// ---------- SUPABASE ----------
+const SUPABASE_URL = "https://otdiywrvzappbmjfkkyi.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZGl5d3J2emFwcGJtamZra3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MTQyMDcsImV4cCI6MjA4NTE5MDIwN30.O5gHqJF1SCvpu19Z0OFHhQsT_ZmeIFbuEu-bpBZXXtY";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// ---------- ADMIN ----------
+const ADMIN_PASSWORD = "mahmar2026";
+
+// ---------- DATA (dynamique) ----------
+let FORMATIONS = [];
+let REALISATIONS = [];
+
+// ---------- MAPPERS ----------
+function mapFormation(row){
+  return {
+    id: row.id,
+    title: row.title,
+    domain: row.domain,
+    status: row.status,
+    statusLabel: row.status_label || '',
+    date: row.date_formation || 'À définir',
+    duration: row.duration || '',
+    location: row.location || '',
+    price: row.price || 'Sur demande',
+    img: row.img || 'Mahmar/Acceuil.jpg',
+    trainerImg: row.trainer_img || 'Mahamar/logo.jpg',
+    trainerName: row.trainer_name || 'Mahmar Group',
+    description: row.description || '',
+    objectives: Array.isArray(row.objectives) ? row.objectives : [],
+    program: Array.isArray(row.program) ? row.program : [],
+    audience: row.audience || 'À préciser'
+  };
+}
+
+function mapRealisation(row){
+  return {
+    id: row.id,
+    cat: row.cat,
+    catLabel: row.cat_label || row.cat,
+    title: row.title,
+    img: row.img
+  };
+}
+
+async function loadAllData(){
+  const [f, r] = await Promise.all([
+    supabase.from('formations').select('*').order('id', { ascending: false }),
+    supabase.from('realisations').select('*').order('id', { ascending: false })
+  ]);
+  if(f.error) console.error('❌ Formations:', f.error);
+  if(r.error) console.error('❌ Réalisations:', r.error);
+  FORMATIONS = (f.data || []).map(mapFormation);
+  REALISATIONS = (r.data || []).map(mapRealisation);
+  console.log(`✅ ${FORMATIONS.length} formations, ${REALISATIONS.length} réalisations chargées`);
+}
+
+// ---------- SERVICES (statique) ----------
 const SERVICES = [
   { num:"01", icon:"🎓", title:"Formations Professionnelles", desc:"Un programme varié pour renforcer les compétences et accompagner le développement professionnel.", items:["Communication & marketing","Inclusion & protection de l'enfance","Développement personnel & leadership","Formations spécialisées selon besoins"] },
   { num:"02", icon:"🖨️", title:"Impression Tout Support", desc:"Des solutions d'impression professionnelles adaptées à tous vos types de supports.", items:["Affiches, flyers, brochures, magazines","Bâches, panneaux, kakémonos","Cartes de visite, dépliants","Impression grand format & signalétique"] },
   { num:"03", icon:"🎬", title:"Production Vidéo", desc:"Des contenus vidéo modernes et dynamiques répondant aux standards professionnels.", items:["Capsules vidéo pour réseaux sociaux","Documentaires institutionnels","Spots publicitaires TV & digital","Montage & post-production"] },
   { num:"04", icon:"📸", title:"Photographie Institutionnelle", desc:"Valorisez votre image à travers des visuels professionnels et soignés.", items:["Reportages photo d'événements","Portraits professionnels","Couvertures médiatiques institutionnelles","Photographie pour supports de communication"] },
   { num:"05", icon:"📅", title:"Planification d'Événements", desc:"Nous vous accompagnons dans l'organisation et la réussite de vos événements.", items:["Conférences & séminaires","Ateliers de formation","Lancements de projets","Événements institutionnels & d'entreprise"] }
-];
-
-const REALISATIONS = [
-  { id:1, cat:"evenement",  catLabel:"Événement",   title:"Conférence institutionnelle",      img:"https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" },
-  { id:2, cat:"video",      catLabel:"Vidéo",       title:"Documentaire institutionnel",      img:"https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80" },
-  { id:3, cat:"photo",      catLabel:"Photographie",title:"Reportage de lancement",           img:"https://images.unsplash.com/photo-1552168324-d612d77725e3?w=800&q=80" },
-  { id:4, cat:"impression", catLabel:"Impression",  title:"Campagne d'affichage",             img:"https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80" },
-  { id:5, cat:"formation",  catLabel:"Formation",   title:"Atelier communication digitale",   img:"https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80" },
-  { id:6, cat:"evenement",  catLabel:"Événement",   title:"Séminaire de formation",           img:"https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80" }
 ];
 
 const SLIDES = [
@@ -1297,6 +1376,72 @@ document.addEventListener('keydown', (e) => {
 });
 if(inscriptionForm) inscriptionForm.addEventListener('submit', handleInscriptionSubmit);
 
+// =========================================
+// ADMIN LOGIN — TRIPLE CLIC SUR LE LOGO
+// =========================================
+let logoClickCount = 0;
+let logoClickTimer = null;
+
+const logoTarget = document.querySelector('.logo');
+if(logoTarget){
+  logoTarget.addEventListener('click', (e) => {
+    logoClickCount++;
+    clearTimeout(logoClickTimer);
+    logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 800);
+    if(logoClickCount >= 3){
+      logoClickCount = 0;
+      e.preventDefault();
+      openLoginModal();
+    }
+  });
+}
+
+const loginModalEl = document.getElementById('loginModal');
+const adminPasswordInput = document.getElementById('adminPassword');
+const loginErrorEl = document.getElementById('loginError');
+const togglePasswordBtn = document.getElementById('togglePassword');
+
+function openLoginModal(){
+  if(!loginModalEl) return;
+  loginModalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => adminPasswordInput?.focus(), 200);
+}
+function closeLoginModal(){
+  if(!loginModalEl) return;
+  loginModalEl.classList.remove('open');
+  document.body.style.overflow = '';
+  if(adminPasswordInput) adminPasswordInput.value = '';
+  if(loginErrorEl) loginErrorEl.textContent = '';
+}
+
+document.getElementById('loginClose')?.addEventListener('click', closeLoginModal);
+loginModalEl?.addEventListener('click', (e) => { if(e.target === loginModalEl) closeLoginModal(); });
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && loginModalEl?.classList.contains('open')) closeLoginModal();
+});
+
+togglePasswordBtn?.addEventListener('click', () => {
+  const type = adminPasswordInput.type === 'password' ? 'text' : 'password';
+  adminPasswordInput.type = type;
+  togglePasswordBtn.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+function attemptLogin(){
+  if(adminPasswordInput.value === ADMIN_PASSWORD){
+    sessionStorage.setItem('mahmar_admin', 'true');
+    window.location.href = 'admin.html';
+  } else {
+    loginErrorEl.textContent = 'Mot de passe incorrect';
+    adminPasswordInput.value = '';
+    adminPasswordInput.focus();
+  }
+}
+document.getElementById('submitLogin')?.addEventListener('click', attemptLogin);
+adminPasswordInput?.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') attemptLogin();
+});
+
 // ---------- INIT ----------
 document.getElementById('year').textContent = new Date().getFullYear();
 const burger = document.getElementById('burger');
@@ -1304,7 +1449,16 @@ const nav = document.getElementById('nav');
 burger.addEventListener('click', () => nav.classList.toggle('open'));
 onScroll();
 window.addEventListener('hashchange', router);
-router();
+
+// ---------- BOOT ----------
+(async function boot(){
+  try {
+    await loadAllData();
+  } catch(e){
+    console.error('Erreur chargement Supabase:', e);
+  }
+  router();
+})();
 </script>
 
 </body>
