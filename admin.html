@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Mahmar Group</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -18,110 +18,357 @@ h1,h2,h3{font-family:'Poppins',sans-serif}
 a{color:inherit;text-decoration:none}
 button{cursor:pointer;font-family:inherit}
 
-/* Layout */
+/* ============================================
+   LAYOUT
+   ============================================ */
 .admin{display:flex;min-height:100vh}
-.sidebar{width:250px;background:var(--navy);color:#fff;padding:24px 0;position:fixed;top:0;bottom:0;left:0;overflow-y:auto}
-.sidebar__brand{display:flex;align-items:center;gap:10px;padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+
+.sidebar{
+  width:250px;background:var(--navy);color:#fff;
+  padding:24px 0;position:fixed;top:0;bottom:0;left:0;
+  overflow-y:auto;z-index:100;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.sidebar__brand{
+  display:flex;align-items:center;gap:10px;
+  padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.08);
+  margin-bottom:16px;
+}
 .sidebar__brand img{width:44px;height:44px;border-radius:50%;object-fit:cover}
 .sidebar__brand strong{font-family:'Poppins',sans-serif;font-size:1.05rem}
 .sidebar__brand span{color:var(--orange)}
 .sidebar__nav{list-style:none;padding:0 12px}
 .sidebar__nav li{margin-bottom:4px}
-.sidebar__nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;font-size:.9rem;font-weight:500;color:rgba(255,255,255,.75);transition:.2s}
+.sidebar__nav a{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:10px;font-size:.9rem;font-weight:500;
+  color:rgba(255,255,255,.75);transition:.2s;
+}
 .sidebar__nav a:hover{background:rgba(255,255,255,.06);color:#fff}
 .sidebar__nav a.active{background:var(--orange);color:#fff}
-.sidebar__footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);margin-top:24px;font-size:.78rem;color:rgba(255,255,255,.5)}
+.sidebar__footer{
+  padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);
+  margin-top:24px;font-size:.78rem;color:rgba(255,255,255,.5);
+}
 
-.main{margin-left:250px;padding:28px 32px;width:calc(100% - 250px)}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.main{
+  margin-left:250px;padding:28px 32px;width:calc(100% - 250px);
+  min-width:0;
+}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:24px;gap:16px;flex-wrap:wrap;
+}
 .topbar h1{font-size:1.5rem}
 .topbar p{color:var(--gray);font-size:.85rem;margin-top:2px}
 
-/* Cards */
-.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:20px}
+/* ============================================
+   BURGER (mobile)
+   ============================================ */
+.burger{
+  display:none;
+  position:fixed;top:16px;left:16px;z-index:200;
+  width:44px;height:44px;border-radius:12px;
+  background:var(--navy);color:#fff;border:none;
+  font-size:1.3rem;line-height:1;
+  box-shadow:0 4px 16px rgba(44,34,80,.3);
+  align-items:center;justify-content:center;
+}
+.burger:hover{background:var(--navy-light)}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(20,15,45,.6);backdrop-filter:blur(3px);
+  z-index:99;opacity:0;visibility:hidden;
+  transition:opacity .3s,visibility .3s;
+}
+.sidebar-overlay.open{opacity:1;visibility:visible}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card{
+  background:#fff;border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:24px;margin-bottom:20px;
+}
 .card h2{font-size:1.1rem;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 
-/* Boutons */
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;border:none;transition:.2s}
+/* ============================================
+   BOUTONS
+   ============================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;
+  border:none;transition:.2s;
+}
 .btn--primary{background:var(--orange);color:#fff}
 .btn--primary:hover{background:var(--orange-dark)}
 .btn--ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line)}
 .btn--ghost:hover{background:var(--off-white)}
 .btn--danger{background:#dc2626;color:#fff}
 .btn--danger:hover{background:#b91c1c}
-.btn--sm{padding:6px 12px;font-size:.78rem}
+.btn--sm{padding:8px 12px;font-size:.78rem}
 
-/* Tableau */
+/* ============================================
+   TABLEAU (desktop)
+   ============================================ */
 .table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line)}
 table{width:100%;border-collapse:collapse;font-size:.85rem;background:#fff}
-thead th{background:var(--off-white);padding:12px 14px;text-align:left;font-weight:600;color:var(--navy);border-bottom:1px solid var(--line);white-space:nowrap}
+thead th{
+  background:var(--off-white);padding:12px 14px;text-align:left;
+  font-weight:600;color:var(--navy);border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
 tbody td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--off-white)}
 .tbl-img{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--off-white)}
 .tbl-actions{display:flex;gap:6px}
 
-/* Badge */
-.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+/* ============================================
+   BADGES
+   ============================================ */
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:999px;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+}
 .badge--ouverte{background:#dcfce7;color:#166534}
 .badge--avenir{background:#ffedd5;color:#9a3412}
 .badge--encours{background:#e0e7ff;color:#3730a3}
 .badge--terminee{background:#e5e7eb;color:#4b5563}
 
-/* Form */
+/* ============================================
+   FORMULAIRES
+   ============================================ */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .field label{font-size:.8rem;font-weight:600;color:var(--navy)}
-.field input,.field select,.field textarea{padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:.2s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(234,107,49,.12)}
+.field input,.field select,.field textarea{
+  padding:10px 14px;border:1px solid var(--line);border-radius:10px;
+  font-family:inherit;font-size:.9rem;background:#fff;transition:.2s;
+  width:100%;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(234,107,49,.12);
+}
 .field textarea{resize:vertical;min-height:80px}
 .field small{color:var(--gray);font-size:.72rem}
 
-/* Modal */
-.modal{position:fixed;inset:0;background:rgba(20,15,45,.75);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}
+/* ============================================
+   MODAL
+   ============================================ */
+.modal{
+  position:fixed;inset:0;background:rgba(20,15,45,.75);
+  backdrop-filter:blur(6px);z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;visibility:hidden;transition:.25s;
+}
 .modal.open{opacity:1;visibility:visible}
-.modal__content{background:#fff;border-radius:18px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-top:5px solid var(--orange);position:relative}
-.modal__head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:2}
+.modal__content{
+  background:#fff;border-radius:18px;width:100%;max-width:640px;
+  max-height:90vh;overflow-y:auto;
+  border-top:5px solid var(--orange);position:relative;
+}
+.modal__head{
+  padding:20px 24px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;background:#fff;z-index:2;
+}
 .modal__head h3{font-size:1.1rem}
-.modal__close{background:var(--off-white);border:none;width:34px;height:34px;border-radius:50%;font-weight:700;color:var(--navy);transition:.2s}
+.modal__close{
+  background:var(--off-white);border:none;width:34px;height:34px;
+  border-radius:50%;font-weight:700;color:var(--navy);transition:.2s;
+  flex-shrink:0;
+}
 .modal__close:hover{background:var(--orange);color:#fff;transform:rotate(90deg)}
 .modal__body{padding:22px 24px}
-.modal__foot{padding:16px 24px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:#fff}
+.modal__foot{
+  padding:16px 24px;border-top:1px solid var(--line);
+  display:flex;justify-content:flex-end;gap:10px;
+  position:sticky;bottom:0;background:#fff;
+}
 
-/* Upload */
-.upload{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.upload__preview{width:70px;height:70px;border-radius:10px;background:var(--off-white);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:1.4rem;color:var(--gray);flex-shrink:0}
+/* ============================================
+   UPLOAD
+   ============================================ */
+.upload{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.upload__preview{
+  width:70px;height:70px;border-radius:10px;
+  background:var(--off-white);border:2px dashed var(--line);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;font-size:1.4rem;color:var(--gray);flex-shrink:0;
+}
 .upload__preview img{width:100%;height:100%;object-fit:cover}
-.upload input[type="file"]{font-size:.78rem}
+.upload input[type="file"]{font-size:.78rem;flex:1;min-width:0}
 
-/* Toast */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:12px 22px;border-radius:999px;font-size:.85rem;font-weight:500;z-index:99999;transition:transform .3s;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+/* ============================================
+   TOAST
+   ============================================ */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(120px);
+  background:var(--navy);color:#fff;
+  padding:12px 22px;border-radius:999px;
+  font-size:.85rem;font-weight:500;z-index:99999;
+  transition:transform .3s;box-shadow:0 10px 30px rgba(0,0,0,.25);
+  max-width:calc(100% - 32px);text-align:center;
+}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast--error{background:#dc2626}
 .toast--success{background:#16a34a}
 
-/* Loader */
+/* ============================================
+   LOADER
+   ============================================ */
 .loader{display:flex;justify-content:center;padding:40px}
-.loader::after{content:'';width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite}
+.loader::after{
+  content:'';width:38px;height:38px;
+  border:3px solid var(--line);border-top-color:var(--orange);
+  border-radius:50%;animation:spin .8s linear infinite;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .hidden{display:none !important}
 .empty{text-align:center;padding:40px;color:var(--gray);font-size:.9rem}
 
-@media(max-width:900px){
-  .sidebar{width:70px;padding-top:16px}
-  .sidebar__brand{padding:0 12px 16px;justify-content:center}
-  .sidebar__brand div{display:none}
-  .sidebar__nav a span:last-child{display:none}
-  .sidebar__nav a{justify-content:center;padding:12px}
-  .sidebar__footer{display:none}
-  .main{margin-left:70px;width:calc(100% - 70px);padding:20px 16px}
+/* ============================================
+   RESPONSIVE — TABLETTE (<= 1024px)
+   ============================================ */
+@media(max-width:1024px){
+  .main{padding:24px 20px}
+  .topbar h1{font-size:1.35rem}
+}
+
+/* ============================================
+   RESPONSIVE — MOBILE (<= 768px)
+   ============================================ */
+@media(max-width:768px){
+  /* Sidebar devient un panneau coulissant */
+  .sidebar{
+    transform:translateX(-100%);
+    width:270px;
+    box-shadow:0 0 40px rgba(0,0,0,.3);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar__brand{padding:0 20px 20px}
+  .sidebar__brand div{display:block}
+  .sidebar__nav a span:last-child{display:inline}
+  .sidebar__nav a{justify-content:flex-start;padding:14px 16px;font-size:.95rem}
+  .sidebar__footer{display:block}
+
+  .burger{display:flex}
+  .sidebar-overlay{display:block}
+
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:70px 14px 20px;
+  }
+
+  /* Topbar empilé */
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  .topbar h1{font-size:1.25rem}
+  .topbar > div{text-align:left}
+  #addBtn{width:100%;padding:12px 18px;font-size:.9rem}
+
+  .card{padding:18px 14px}
+  .card h2{font-size:1rem}
+
+  /* Tableau → cartes empilées */
+  .table-wrap{border:none;overflow:visible}
+  table, thead, tbody, th, td, tr{display:block}
+  thead{display:none}
+  tbody tr{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(44,34,80,.04);
+  }
+  tbody tr:last-child{margin-bottom:0}
+  tbody tr:hover{background:#fff}
+  tbody td{
+    border:none;
+    padding:6px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    font-size:.88rem;
+  }
+  tbody td:first-child:not(:only-child){
+    justify-content:flex-start;
+  }
+  tbody td::before{
+    content:attr(data-label);
+    font-weight:600;
+    color:var(--gray);
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    flex-shrink:0;
+  }
+  tbody td:first-child::before{content:''}
+  .tbl-img{width:60px;height:60px}
+  .tbl-actions{width:100%;justify-content:flex-end;margin-top:8px;gap:10px}
+  .tbl-actions .btn{padding:10px 16px;font-size:.85rem}
+
+  /* Formulaires en 1 colonne */
   .grid2,.grid3{grid-template-columns:1fr}
+
+  /* Modal plein écran */
+  .modal{padding:0;align-items:flex-end}
+  .modal__content{
+    max-height:95vh;
+    border-radius:20px 20px 0 0;
+    border-top:5px solid var(--orange);
+  }
+  .modal__head{padding:16px 18px}
+  .modal__head h3{font-size:1rem}
+  .modal__body{padding:18px}
+  .modal__foot{
+    padding:14px 18px;
+    flex-direction:column-reverse;
+    gap:8px;
+  }
+  .modal__foot .btn{width:100%;padding:12px}
+
+  /* Upload */
+  .upload__preview{width:60px;height:60px}
+
+  /* Toast */
+  .toast{font-size:.8rem;padding:10px 18px;bottom:16px}
+}
+
+/* ============================================
+   TRÈS PETITS ÉCRANS (<= 400px)
+   ============================================ */
+@media(max-width:400px){
+  .main{padding:64px 10px 16px}
+  .topbar h1{font-size:1.1rem}
+  .topbar p{font-size:.78rem}
+  .card{padding:14px 10px}
+  .card h2{font-size:.92rem}
+  tbody tr{padding:10px}
+  tbody td{font-size:.82rem}
+  .btn{font-size:.8rem;padding:9px 14px}
+  .btn--sm{padding:8px 10px;font-size:.75rem}
+  .sidebar{width:240px}
 }
 </style>
 </head>
 <body>
+
+<!-- BURGER -->
+<button class="burger" id="burger" aria-label="Menu">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- GATE -->
 <div id="gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px">
@@ -131,7 +378,7 @@ tbody tr:hover{background:var(--off-white)}
 
 <!-- ADMIN APP -->
 <div class="admin hidden" id="adminApp">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar__brand">
       <img src="Mahamar/logo.jpg" alt="Mahmar">
       <div><strong>MAHMAR <span>Admin</span></strong></div>
@@ -311,7 +558,6 @@ tbody tr:hover{background:var(--off-white)}
 const SUPABASE_URL = "https://otdiywrvzappbmjfkkyi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZGl5d3J2emFwcGJtamZra3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MTQyMDcsImV4cCI6MjA4NTE5MDIwN30.O5gHqJF1SCvpu19Z0OFHhQsT_ZmeIFbuEu-bpBZXXtY";
 
-// ⚠️ Renommé en "db" pour éviter le conflit avec la variable globale `supabase`
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* GATE */
@@ -341,6 +587,25 @@ async function uploadImage(file, bucket){
   return data.publicUrl;
 }
 
+/* BURGER + OVERLAY */
+const burger = document.getElementById('burger');
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+function openSidebar(){
+  sidebar.classList.add('open');
+  sidebarOverlay.classList.add('open');
+}
+function closeSidebar(){
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+}
+burger?.addEventListener('click', () => {
+  if(sidebar.classList.contains('open')) closeSidebar();
+  else openSidebar();
+});
+sidebarOverlay?.addEventListener('click', closeSidebar);
+
 /* SIDEBAR / TABS */
 const tabs = {
   formations:{ title:"Formations", subtitle:"Gérez le catalogue de formations", action:"Ajouter une formation", add:()=>openFormationModal() },
@@ -359,6 +624,8 @@ $$('.sidebar__nav a[data-tab]').forEach(a => {
     const addBtn = $('#addBtn');
     addBtn.textContent = '+ ' + tabs[tab].action;
     addBtn.onclick = tabs[tab].add;
+    // Ferme la sidebar sur mobile après le clic
+    if(window.innerWidth <= 768) closeSidebar();
   });
 });
 
@@ -389,12 +656,12 @@ async function loadFormations(){
         <tbody>
           ${formationsCache.map(f => `
             <tr>
-              <td>${f.img ? `<img src="${f.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
-              <td><strong>${f.title}</strong></td>
-              <td>${f.domain || ''}</td>
-              <td><span class="badge badge--${f.status}">${f.status_label || f.status}</span></td>
-              <td>${f.date_formation || '—'}</td>
-              <td>
+              <td data-label="Image">${f.img ? `<img src="${f.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
+              <td data-label="Titre"><strong>${f.title}</strong></td>
+              <td data-label="Domaine">${f.domain || ''}</td>
+              <td data-label="Statut"><span class="badge badge--${f.status}">${f.status_label || f.status}</span></td>
+              <td data-label="Date">${f.date_formation || '—'}</td>
+              <td data-label="Actions">
                 <div class="tbl-actions">
                   <button class="btn btn--ghost btn--sm" onclick="editFormation(${f.id})">✏️</button>
                   <button class="btn btn--danger btn--sm" onclick="deleteFormation(${f.id})">🗑️</button>
@@ -531,10 +798,10 @@ async function loadRealisations(){
         <tbody>
           ${realisationsCache.map(r => `
             <tr>
-              <td>${r.img ? `<img src="${r.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
-              <td><strong>${r.title}</strong></td>
-              <td><span class="badge badge--encours">${r.cat_label || r.cat}</span></td>
-              <td>
+              <td data-label="Image">${r.img ? `<img src="${r.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
+              <td data-label="Titre"><strong>${r.title}</strong></td>
+              <td data-label="Catégorie"><span class="badge badge--encours">${r.cat_label || r.cat}</span></td>
+              <td data-label="Actions">
                 <div class="tbl-actions">
                   <button class="btn btn--ghost btn--sm" onclick="editRealisation(${r.id})">✏️</button>
                   <button class="btn btn--danger btn--sm" onclick="deleteRealisation(${r.id})">🗑️</button>
