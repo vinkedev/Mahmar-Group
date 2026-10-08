@@ -633,7 +633,9 @@ const WHATSAPP_COMPANY = "22661040464";
 // ---------- SUPABASE ----------
 const SUPABASE_URL = "https://otdiywrvzappbmjfkkyi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZGl5d3J2emFwcGJtamZra3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MTQyMDcsImV4cCI6MjA4NTE5MDIwN30.O5gHqJF1SCvpu19Z0OFHhQsT_ZmeIFbuEu-bpBZXXtY";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ⚠️ On renomme en "db" pour éviter le conflit avec la variable globale `supabase`
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ---------- ADMIN ----------
 const ADMIN_PASSWORD = "mahmar2026";
@@ -654,7 +656,7 @@ function mapFormation(row){
     duration: row.duration || '',
     location: row.location || '',
     price: row.price || 'Sur demande',
-    img: row.img || 'Mahmar/Acceuil.jpg',
+    img: row.img || 'Mahamar/Acceuil.jpg',
     trainerImg: row.trainer_img || 'Mahamar/logo.jpg',
     trainerName: row.trainer_name || 'Mahmar Group',
     description: row.description || '',
@@ -676,8 +678,8 @@ function mapRealisation(row){
 
 async function loadAllData(){
   const [f, r] = await Promise.all([
-    supabase.from('formations').select('*').order('id', { ascending: false }),
-    supabase.from('realisations').select('*').order('id', { ascending: false })
+    db.from('formations').select('*').order('id', { ascending: false }),
+    db.from('realisations').select('*').order('id', { ascending: false })
   ]);
   if(f.error) console.error('❌ Formations:', f.error);
   if(r.error) console.error('❌ Réalisations:', r.error);
