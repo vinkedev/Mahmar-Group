@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Mahmar Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#EA6B31; --orange-dark:#c9551f;
+  --navy:#2C2250; --navy-dark:#1e1740; --navy-light:#3d3168;
+  --white:#fff; --off-white:#f7f6fb; --gray:#6b6880; --line:#e6e4ee;
+  --radius:14px; --shadow:0 10px 30px rgba(44,34,80,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--navy);min-height:100vh}
+h1,h2,h3{font-family:'Poppins',sans-serif}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+
+/* Layout */
+.admin{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--navy);color:#fff;padding:24px 0;position:fixed;top:0;bottom:0;left:0;overflow-y:auto}
+.sidebar__brand{display:flex;align-items:center;gap:10px;padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.sidebar__brand img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.sidebar__brand strong{font-family:'Poppins',sans-serif;font-size:1.05rem}
+.sidebar__brand span{color:var(--orange)}
+.sidebar__nav{list-style:none;padding:0 12px}
+.sidebar__nav li{margin-bottom:4px}
+.sidebar__nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;font-size:.9rem;font-weight:500;color:rgba(255,255,255,.75);transition:.2s}
+.sidebar__nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.sidebar__nav a.active{background:var(--orange);color:#fff}
+.sidebar__footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);margin-top:24px;font-size:.78rem;color:rgba(255,255,255,.5)}
+
+.main{margin-left:250px;padding:28px 32px;width:calc(100% - 250px)}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.topbar h1{font-size:1.5rem}
+.topbar p{color:var(--gray);font-size:.85rem;margin-top:2px}
+
+/* Cards */
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:20px}
+.card h2{font-size:1.1rem;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:.85rem;border:none;transition:.2s}
+.btn--primary{background:var(--orange);color:#fff}
+.btn--primary:hover{background:var(--orange-dark)}
+.btn--ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line)}
+.btn--ghost:hover{background:var(--off-white)}
+.btn--danger{background:#dc2626;color:#fff}
+.btn--danger:hover{background:#b91c1c}
+.btn--sm{padding:6px 12px;font-size:.78rem}
+
+/* Tableau */
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;background:#fff}
+thead th{background:var(--off-white);padding:12px 14px;text-align:left;font-weight:600;color:var(--navy);border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--off-white)}
+.tbl-img{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--off-white)}
+.tbl-actions{display:flex;gap:6px}
+
+/* Badge */
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge--ouverte{background:#dcfce7;color:#166534}
+.badge--avenir{background:#ffedd5;color:#9a3412}
+.badge--encours{background:#e0e7ff;color:#3730a3}
+.badge--terminee{background:#e5e7eb;color:#4b5563}
+
+/* Form */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:.8rem;font-weight:600;color:var(--navy)}
+.field input,.field select,.field textarea{padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;transition:.2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(234,107,49,.12)}
+.field textarea{resize:vertical;min-height:80px}
+.field small{color:var(--gray);font-size:.72rem}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(20,15,45,.75);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}
+.modal.open{opacity:1;visibility:visible}
+.modal__content{background:#fff;border-radius:18px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;border-top:5px solid var(--orange);position:relative}
+.modal__head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:2}
+.modal__head h3{font-size:1.1rem}
+.modal__close{background:var(--off-white);border:none;width:34px;height:34px;border-radius:50%;font-weight:700;color:var(--navy);transition:.2s}
+.modal__close:hover{background:var(--orange);color:#fff;transform:rotate(90deg)}
+.modal__body{padding:22px 24px}
+.modal__foot{padding:16px 24px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:#fff}
+
+/* Upload */
+.upload{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.upload__preview{width:70px;height:70px;border-radius:10px;background:var(--off-white);border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:1.4rem;color:var(--gray);flex-shrink:0}
+.upload__preview img{width:100%;height:100%;object-fit:cover}
+.upload input[type="file"]{font-size:.78rem}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:#fff;padding:12px 22px;border-radius:999px;font-size:.85rem;font-weight:500;z-index:99999;transition:transform .3s;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast--error{background:#dc2626}
+.toast--success{background:#16a34a}
+
+/* Loader */
+.loader{display:flex;justify-content:center;padding:40px}
+.loader::after{content:'';width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hidden{display:none !important}
+.empty{text-align:center;padding:40px;color:var(--gray);font-size:.9rem}
+
+@media(max-width:900px){
+  .sidebar{width:70px;padding-top:16px}
+  .sidebar__brand{padding:0 12px 16px;justify-content:center}
+  .sidebar__brand div{display:none}
+  .sidebar__nav a span:last-child{display:none}
+  .sidebar__nav a{justify-content:center;padding:12px}
+  .sidebar__footer{display:none}
+  .main{margin-left:70px;width:calc(100% - 70px);padding:20px 16px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ GATE (SÉCURITÉ) ============ -->
+<div id="gate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px">
+  <div class="loader"></div>
+  <p style="color:var(--gray);font-size:.85rem">Vérification de la session…</p>
+</div>
+
+<!-- ============ ADMIN APP ============ -->
+<div class="admin hidden" id="adminApp">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <img src="Mahamar/logo.jpg" alt="Mahmar">
+      <div><strong>MAHMAR <span>Admin</span></strong></div>
+    </div>
+    <ul class="sidebar__nav">
+      <li><a href="#" class="active" data-tab="formations">📘 <span>Formations</span></a></li>
+      <li><a href="#" data-tab="realisations">🖼️ <span>Réalisations</span></a></li>
+      <li><a href="#" data-tab="settings">⚙️ <span>Paramètres</span></a></li>
+      <li style="margin-top:20px"><a href="index.html">🌐 <span>Voir le site</span></a></li>
+      <li><a href="#" id="logoutBtn" style="color:#fca5a5">🚪 <span>Déconnexion</span></a></li>
+    </ul>
+    <div class="sidebar__footer">
+      Connecté en tant qu'admin<br>Mahmar Group © 2026
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle">Formations</h1>
+        <p id="pageSubtitle">Gérez le catalogue de formations</p>
+      </div>
+      <button class="btn btn--primary" id="addBtn">+ Ajouter</button>
+    </div>
+
+    <!-- FORMATIONS -->
+    <section id="tab-formations" class="tab">
+      <div class="card">
+        <h2>📘 Liste des formations</h2>
+        <div id="formationsList"><div class="loader"></div></div>
+      </div>
+    </section>
+
+    <!-- RÉALISATIONS -->
+    <section id="tab-realisations" class="tab hidden">
+      <div class="card">
+        <h2>🖼️ Liste des réalisations</h2>
+        <div id="realisationsList"><div class="loader"></div></div>
+      </div>
+    </section>
+
+    <!-- PARAMÈTRES -->
+    <section id="tab-settings" class="tab hidden">
+      <div class="card">
+        <h2>⚙️ Paramètres du site</h2>
+        <div id="settingsContent"><div class="loader"></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ MODAL EDITION FORMATION ============ -->
+<div class="modal" id="formationModal">
+  <div class="modal__content">
+    <div class="modal__head">
+      <h3 id="formationModalTitle">Nouvelle formation</h3>
+      <button class="modal__close" data-close="formationModal">✕</button>
+    </div>
+    <form class="modal__body" id="formationForm">
+      <input type="hidden" id="f_id">
+      <div class="field">
+        <label>Titre *</label>
+        <input type="text" id="f_title" required>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Domaine *</label>
+          <input type="text" id="f_domain" required placeholder="Ex: Communication">
+        </div>
+        <div class="field">
+          <label>Statut *</label>
+          <select id="f_status" required>
+            <option value="ouverte">Ouverte</option>
+            <option value="avenir">À venir</option>
+            <option value="encours">En cours</option>
+            <option value="terminee">Terminée</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Libellé du statut *</label>
+        <input type="text" id="f_status_label" required placeholder="Ex: Inscriptions ouvertes">
+      </div>
+      <div class="grid3">
+        <div class="field"><label>Date</label><input type="text" id="f_date" placeholder="À définir"></div>
+        <div class="field"><label>Durée</label><input type="text" id="f_duration" placeholder="5 jours"></div>
+        <div class="field"><label>Lieu</label><input type="text" id="f_location" placeholder="Ouagadougou"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Tarif</label><input type="text" id="f_price" placeholder="Sur demande"></div>
+        <div class="field"><label>Formateur</label><input type="text" id="f_trainer_name" placeholder="Nom du formateur"></div>
+      </div>
+
+      <div class="field">
+        <label>Image de la formation</label>
+        <div class="upload">
+          <div class="upload__preview" id="f_imgPreview">🖼️</div>
+          <input type="file" id="f_imgFile" accept="image/*">
+        </div>
+        <small>Ou colle une URL :</small>
+        <input type="text" id="f_img" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label>Photo formateur</label>
+        <div class="upload">
+          <div class="upload__preview" id="f_trainerPreview">👤</div>
+          <input type="file" id="f_trainerFile" accept="image/*">
+        </div>
+        <input type="text" id="f_trainer_img" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label>Description *</label>
+        <textarea id="f_description" required></textarea>
+      </div>
+      <div class="field">
+        <label>Objectifs (un par ligne)</label>
+        <textarea id="f_objectives" placeholder="Objectif 1&#10;Objectif 2"></textarea>
+      </div>
+      <div class="field">
+        <label>Programme (un par ligne)</label>
+        <textarea id="f_program" placeholder="Module 1 — ...&#10;Module 2 — ..."></textarea>
+      </div>
+
+      <div class="modal__foot">
+        <button type="button" class="btn btn--ghost" data-close="formationModal">Annuler</button>
+        <button type="submit" class="btn btn--primary" id="f_submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MODAL EDITION RÉALISATION ============ -->
+<div class="modal" id="realisationModal">
+  <div class="modal__content">
+    <div class="modal__head">
+      <h3 id="realisationModalTitle">Nouvelle réalisation</h3>
+      <button class="modal__close" data-close="realisationModal">✕</button>
+    </div>
+    <form class="modal__body" id="realisationForm">
+      <input type="hidden" id="r_id">
+      <div class="field">
+        <label>Titre *</label>
+        <input type="text" id="r_title" required>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Catégorie (slug) *</label>
+          <select id="r_cat" required>
+            <option value="evenement">evenement</option>
+            <option value="video">video</option>
+            <option value="photo">photo</option>
+            <option value="impression">impression</option>
+            <option value="formation">formation</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Libellé catégorie *</label>
+          <input type="text" id="r_cat_label" required placeholder="Ex: Événement">
+        </div>
+      </div>
+      <div class="field">
+        <label>Image *</label>
+        <div class="upload">
+          <div class="upload__preview" id="r_imgPreview">🖼️</div>
+          <input type="file" id="r_imgFile" accept="image/*">
+        </div>
+        <input type="text" id="r_img" placeholder="https://...">
+      </div>
+      <div class="modal__foot">
+        <button type="button" class="btn btn--ghost" data-close="realisationModal">Annuler</button>
+        <button type="submit" class="btn btn--primary" id="r_submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+/* =========================================
+   MAHMAR GROUP — ADMIN PANEL
+   ========================================= */
+const SUPABASE_URL = "https://otdiywrvzappbmjfkkyi.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZGl5d3J2emFwcGJtamZra3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MTQyMDcsImV4cCI6MjA4NTE5MDIwN30.O5gHqJF1SCvpu19Z0OFHhQsT_ZmeIFbuEu-bpBZXXtY";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* --- GATE --- */
+if(sessionStorage.getItem('mahmar_admin') !== 'true'){
+  window.location.href = 'index.html';
+}
+document.getElementById('gate').style.display = 'none';
+document.getElementById('adminApp').classList.remove('hidden');
+
+/* --- HELPERS --- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+function toast(msg, type='success'){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = `toast toast--${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+async function uploadImage(file, bucket){
+  const ext = file.name.split('.').pop();
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl:'3600', upsert:false });
+  if(error) throw error;
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+/* --- SIDEBAR / TABS --- */
+const tabs = {
+  formations:{ title:"Formations", subtitle:"Gérez le catalogue de formations", action:"Ajouter une formation", add:()=>openFormationModal() },
+  realisations:{ title:"Réalisations", subtitle:"Gérez votre portfolio", action:"Ajouter une réalisation", add:()=>openRealisationModal() },
+  settings:{ title:"Paramètres", subtitle:"Configuration du site", action:null, add:null }
+};
+$$('.sidebar__nav a[data-tab]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const tab = a.dataset.tab;
+    $$('.sidebar__nav a').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+    $$('.tab').forEach(t => t.classList.add('hidden'));
+    $(`#tab-${tab}`).classList.remove('hidden');
+    $('#pageTitle').textContent = tabs[tab].title;
+    $('#pageSubtitle').textContent = tabs[tab].subtitle;
+    const addBtn = $('#addBtn');
+    if(tabs[tab].add){
+      addBtn.classList.remove('hidden');
+      addBtn.textContent = '+ ' + tabs[tab].action;
+      addBtn.onclick = tabs[tab].add;
+    } else {
+      addBtn.classList.add('hidden');
+    }
+  });
+});
+
+/* --- LOGOUT --- */
+$('#logoutBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  sessionStorage.removeItem('mahmar_admin');
+  window.location.href = 'index.html';
+});
+
+/* =========================================
+   FORMATIONS
+   ========================================= */
+let formationsCache = [];
+
+async function loadFormations(){
+  const wrap = $('#formationsList');
+  wrap.innerHTML = '<div class="loader"></div>';
+  const { data, error } = await supabase.from('formations').select('*').order('id', { ascending:false });
+  if(error){ toast('Erreur chargement: ' + error.message, 'error'); return; }
+  formationsCache = data || [];
+  if(!formationsCache.length){ wrap.innerHTML = '<p class="empty">Aucune formation. Cliquez sur "+ Ajouter".</p>'; return; }
+
+  wrap.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th></th><th>Titre</th><th>Domaine</th><th>Statut</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>
+          ${formationsCache.map(f => `
+            <tr>
+              <td>${f.img ? `<img src="${f.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
+              <td><strong>${f.title}</strong></td>
+              <td>${f.domain}</td>
+              <td><span class="badge badge--${f.status}">${f.status_label || f.status}</span></td>
+              <td>${f.date_formation || f.date || '—'}</td>
+              <td>
+                <div class="tbl-actions">
+                  <button class="btn btn--ghost btn--sm" onclick="editFormation(${f.id})">✏️</button>
+                  <button class="btn btn--danger btn--sm" onclick="deleteFormation(${f.id})">🗑️</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+window.editFormation = (id) => {
+  const f = formationsCache.find(x => x.id === id);
+  if(f) openFormationModal(f);
+};
+
+window.deleteFormation = async (id) => {
+  if(!confirm('Supprimer cette formation ?')) return;
+  const { error } = await supabase.from('formations').delete().eq('id', id);
+  if(error){ toast('Erreur: ' + error.message, 'error'); return; }
+  toast('Formation supprimée');
+  loadFormations();
+};
+
+function openFormationModal(f=null){
+  $('#formationModalTitle').textContent = f ? 'Modifier la formation' : 'Nouvelle formation';
+  $('#f_id').value = f?.id || '';
+  $('#f_title').value = f?.title || '';
+  $('#f_domain').value = f?.domain || '';
+  $('#f_status').value = f?.status || 'ouverte';
+  $('#f_status_label').value = f?.status_label || 'Inscriptions ouvertes';
+  $('#f_date').value = f?.date_formation || f?.date || '';
+  $('#f_duration').value = f?.duration || '';
+  $('#f_location').value = f?.location || '';
+  $('#f_price').value = f?.price || 'Sur demande';
+  $('#f_trainer_name').value = f?.trainer_name || '';
+  $('#f_img').value = f?.img || '';
+  $('#f_trainer_img').value = f?.trainer_img || '';
+  $('#f_description').value = f?.description || '';
+  $('#f_objectives').value = Array.isArray(f?.objectives) ? f.objectives.join('\n') : '';
+  $('#f_program').value = Array.isArray(f?.program) ? f.program.join('\n') : '';
+
+  const imgPrev = $('#f_imgPreview');
+  imgPrev.innerHTML = f?.img ? `<img src="${f.img}">` : '🖼️';
+  const trPrev = $('#f_trainerPreview');
+  trPrev.innerHTML = f?.trainer_img ? `<img src="${f.trainer_img}">` : '👤';
+
+  $('#formationModal').classList.add('open');
+}
+
+/* Preview image */
+$('#f_imgFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(file) $('#f_imgPreview').innerHTML = `<img src="${URL.createObjectURL(file)}">`;
+});
+$('#f_trainerFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(file) $('#f_trainerPreview').innerHTML = `<img src="${URL.createObjectURL(file)}">`;
+});
+$('#r_imgFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(file) $('#r_imgPreview').innerHTML = `<img src="${URL.createObjectURL(file)}">`;
+});
+
+/* Submit formation */
+$('#formationForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#f_submit');
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+
+  try{
+    let imgUrl = $('#f_img').value.trim();
+    let trainerImgUrl = $('#f_trainer_img').value.trim();
+
+    const imgFile = $('#f_imgFile').files[0];
+    if(imgFile) imgUrl = await uploadImage(imgFile, 'formations-images');
+
+    const trainerFile = $('#f_trainerFile').files[0];
+    if(trainerFile) trainerImgUrl = await uploadImage(trainerFile, 'formateurs-avatars');
+
+    const payload = {
+      title: $('#f_title').value.trim(),
+      domain: $('#f_domain').value.trim(),
+      status: $('#f_status').value,
+      status_label: $('#f_status_label').value.trim(),
+      date_formation: $('#f_date').value.trim() || null,
+      duration: $('#f_duration').value.trim(),
+      location: $('#f_location').value.trim(),
+      price: $('#f_price').value.trim(),
+      trainer_name: $('#f_trainer_name').value.trim(),
+      img: imgUrl || null,
+      trainer_img: trainerImgUrl || null,
+      description: $('#f_description').value.trim(),
+      objectives: $('#f_objectives').value.split('\n').map(s=>s.trim()).filter(Boolean),
+      program: $('#f_program').value.split('\n').map(s=>s.trim()).filter(Boolean)
+    };
+
+    const id = $('#f_id').value;
+    let error;
+    if(id){
+      ({ error } = await supabase.from('formations').update(payload).eq('id', id));
+    } else {
+      ({ error } = await supabase.from('formations').insert(payload));
+    }
+    if(error) throw error;
+
+    toast(id ? 'Formation mise à jour' : 'Formation créée');
+    closeModal('formationModal');
+    loadFormations();
+  }catch(err){
+    console.error(err);
+    toast('Erreur: ' + err.message, 'error');
+  }finally{
+    btn.disabled = false; btn.textContent = 'Enregistrer';
+  }
+});
+
+/* =========================================
+   RÉALISATIONS
+   ========================================= */
+let realisationsCache = [];
+
+async function loadRealisations(){
+  const wrap = $('#realisationsList');
+  wrap.innerHTML = '<div class="loader"></div>';
+  const { data, error } = await supabase.from('realisations').select('*').order('id', { ascending:false });
+  if(error){ toast('Erreur: ' + error.message, 'error'); return; }
+  realisationsCache = data || [];
+  if(!realisationsCache.length){ wrap.innerHTML = '<p class="empty">Aucune réalisation.</p>'; return; }
+
+  wrap.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Titre</th><th>Catégorie</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${realisationsCache.map(r => `
+            <tr>
+              <td>${r.img ? `<img src="${r.img}" class="tbl-img" onerror="this.style.display='none'">` : ''}</td>
+              <td><strong>${r.title}</strong></td>
+              <td><span class="badge badge--encours">${r.cat_label || r.cat}</span></td>
+              <td>
+                <div class="tbl-actions">
+                  <button class="btn btn--ghost btn--sm" onclick="editRealisation(${r.id})">✏️</button>
+                  <button class="btn btn--danger btn--sm" onclick="deleteRealisation(${r.id})">🗑️</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+window.editRealisation = (id) => {
+  const r = realisationsCache.find(x => x.id === id);
+  if(r) openRealisationModal(r);
+};
+
+window.deleteRealisation = async (id) => {
+  if(!confirm('Supprimer ?')) return;
+  const { error } = await supabase.from('realisations').delete().eq('id', id);
+  if(error){ toast('Erreur: ' + error.message, 'error'); return; }
+  toast('Supprimée');
+  loadRealisations();
+};
+
+function openRealisationModal(r=null){
+  $('#realisationModalTitle').textContent = r ? 'Modifier' : 'Nouvelle réalisation';
+  $('#r_id').value = r?.id || '';
+  $('#r_title').value = r?.title || '';
+  $('#r_cat').value = r?.cat || 'evenement';
+  $('#r_cat_label').value = r?.cat_label || 'Événement';
+  $('#r_img').value = r?.img || '';
+  $('#r_imgPreview').innerHTML = r?.img ? `<img src="${r.img}">` : '🖼️';
+  $('#realisationModal').classList.add('open');
+}
+
+$('#realisationForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('#r_submit');
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+  try{
+    let imgUrl = $('#r_img').value.trim();
+    const file = $('#r_imgFile').files[0];
+    if(file) imgUrl = await uploadImage(file, 'realisations-images');
+    if(!imgUrl) throw new Error('Image obligatoire');
+
+    const payload = {
+      title: $('#r_title').value.trim(),
+      cat: $('#r_cat').value,
+      cat_label: $('#r_cat_label').value.trim(),
+      img: imgUrl
+    };
+    const id = $('#r_id').value;
+    let error;
+    if(id){ ({ error } = await supabase.from('realisations').update(payload).eq('id', id)); }
+    else { ({ error } = await supabase.from('realisations').insert(payload)); }
+    if(error) throw error;
+
+    toast(id ? 'Mise à jour' : 'Créée');
+    closeModal('realisationModal');
+    loadRealisations();
+  }catch(err){
+    toast('Erreur: ' + err.message, 'error');
+  }finally{
+    btn.disabled = false; btn.textContent = 'Enregistrer';
+  }
+});
+
+/* =========================================
+   PARAMÈTRES (bandeau d'accueil)
+   ========================================= */
+async function loadSettings(){
+  const wrap = $('#settingsContent');
+  wrap.innerHTML = '<div class="loader"></div>';
+  const { data } = await supabase.from('site_settings').select('*').eq('id', 1).maybeSingle();
+  wrap.innerHTML = `
+    <div class="field">
+      <label>Message du bandeau d'accueil</label>
+      <textarea id="s_bandeau_message" placeholder="Bienvenue chez Mahmar Group...">${data?.bandeau_message || ''}</textarea>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Couleur</label>
+        <select id="s_bandeau_couleur">
+          <option value="orange" ${data?.bandeau_couleur==='orange'?'selected':''}>Orange</option>
+          <option value="bleu" ${data?.bandeau_couleur==='bleu'?'selected':''}>Bleu nuit</option>
+          <option value="vert" ${data?.bandeau_couleur==='vert'?'selected':''}>Vert</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Actif</label>
+        <select id="s_bandeau_actif">
+          <option value="true" ${data?.bandeau_actif?'selected':''}>Oui</option>
+          <option value="false" ${!data?.bandeau_actif?'selected':''}>Non</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn--primary" id="saveSettings">Enregistrer</button>`;
+
+  $('#saveSettings').addEventListener('click', async () => {
+    const payload = {
+      id: 1,
+      bandeau_message: $('#s_bandeau_message').value.trim(),
+      bandeau_couleur: $('#s_bandeau_couleur').value,
+      bandeau_actif: $('#s_bandeau_actif').value === 'true'
+    };
+    const { error } = await supabase.from('site_settings').upsert(payload);
+    if(error){ toast('Erreur: ' + error.message, 'error'); return; }
+    toast('Paramètres enregistrés');
+  });
+}
+
+/* =========================================
+   MODALS GENERIC
+   ========================================= */
+function closeModal(id){
+  $('#' + id).classList.remove('open');
+}
+$$('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+$$('.modal').forEach(m => {
+  m.addEventListener('click', (e) => { if(e.target === m) closeModal(m.id); });
+});
+
+/* =========================================
+   INIT
+   ========================================= */
+loadFormations();
+loadRealisations();
+loadSettings();
+// Le bouton add par défaut
+$('#addBtn').onclick = tabs.formations.add;
+</script>
+</body>
+</html>
