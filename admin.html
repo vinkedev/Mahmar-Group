@@ -310,7 +310,9 @@ tbody tr:hover{background:var(--off-white)}
    ========================================= */
 const SUPABASE_URL = "https://otdiywrvzappbmjfkkyi.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90ZGl5d3J2emFwcGJtamZra3lpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2MTQyMDcsImV4cCI6MjA4NTE5MDIwN30.O5gHqJF1SCvpu19Z0OFHhQsT_ZmeIFbuEu-bpBZXXtY";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ⚠️ Renommé en "db" pour éviter le conflit avec la variable globale `supabase`
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* GATE */
 if(sessionStorage.getItem('mahmar_admin') !== 'true'){
@@ -333,9 +335,9 @@ function toast(msg, type='success'){
 async function uploadImage(file, bucket){
   const ext = file.name.split('.').pop();
   const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
-  const { error } = await supabase.storage.from(bucket).upload(path, file, { cacheControl:'3600', upsert:false });
+  const { error } = await db.storage.from(bucket).upload(path, file, { cacheControl:'3600', upsert:false });
   if(error) throw error;
-  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  const { data } = db.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
 }
 
@@ -373,7 +375,7 @@ let formationsCache = [];
 async function loadFormations(){
   const wrap = $('#formationsList');
   wrap.innerHTML = '<div class="loader"></div>';
-  const { data, error } = await supabase.from('formations').select('*').order('id', { ascending:false });
+  const { data, error } = await db.from('formations').select('*').order('id', { ascending:false });
   if(error){ toast('Erreur chargement: ' + error.message, 'error'); return; }
   formationsCache = data || [];
   if(!formationsCache.length){ wrap.innerHTML = '<p class="empty">Aucune formation. Cliquez sur "+ Ajouter".</p>'; return; }
@@ -412,7 +414,7 @@ window.editFormation = (id) => {
 
 window.deleteFormation = async (id) => {
   if(!confirm('Supprimer cette formation ?')) return;
-  const { error } = await supabase.from('formations').delete().eq('id', id);
+  const { error } = await db.from('formations').delete().eq('id', id);
   if(error){ toast('Erreur: ' + error.message, 'error'); return; }
   toast('Formation supprimée');
   loadFormations();
@@ -494,9 +496,9 @@ $('#formationForm').addEventListener('submit', async (e) => {
     const id = $('#f_id').value;
     let error;
     if(id){
-      ({ error } = await supabase.from('formations').update(payload).eq('id', id));
+      ({ error } = await db.from('formations').update(payload).eq('id', id));
     } else {
-      ({ error } = await supabase.from('formations').insert(payload));
+      ({ error } = await db.from('formations').insert(payload));
     }
     if(error) throw error;
 
@@ -517,7 +519,7 @@ let realisationsCache = [];
 async function loadRealisations(){
   const wrap = $('#realisationsList');
   wrap.innerHTML = '<div class="loader"></div>';
-  const { data, error } = await supabase.from('realisations').select('*').order('id', { ascending:false });
+  const { data, error } = await db.from('realisations').select('*').order('id', { ascending:false });
   if(error){ toast('Erreur: ' + error.message, 'error'); return; }
   realisationsCache = data || [];
   if(!realisationsCache.length){ wrap.innerHTML = '<p class="empty">Aucune réalisation.</p>'; return; }
@@ -552,7 +554,7 @@ window.editRealisation = (id) => {
 
 window.deleteRealisation = async (id) => {
   if(!confirm('Supprimer ?')) return;
-  const { error } = await supabase.from('realisations').delete().eq('id', id);
+  const { error } = await db.from('realisations').delete().eq('id', id);
   if(error){ toast('Erreur: ' + error.message, 'error'); return; }
   toast('Supprimée');
   loadRealisations();
@@ -587,8 +589,8 @@ $('#realisationForm').addEventListener('submit', async (e) => {
     };
     const id = $('#r_id').value;
     let error;
-    if(id){ ({ error } = await supabase.from('realisations').update(payload).eq('id', id)); }
-    else { ({ error } = await supabase.from('realisations').insert(payload)); }
+    if(id){ ({ error } = await db.from('realisations').update(payload).eq('id', id)); }
+    else { ({ error } = await db.from('realisations').insert(payload)); }
     if(error) throw error;
 
     toast(id ? 'Mise à jour' : 'Créée');
